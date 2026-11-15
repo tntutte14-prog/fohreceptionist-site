@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FOH AI | AI phone receptionist for restaurants</title>
+<meta name="description" content="FOH AI answers your restaurant's phone, takes reservations and answers questions about hours and menu, so your staff can stay on the floor.">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta property="og:title" content="FOH AI | AI phone receptionist for restaurants">
+<meta property="og:description" content="Never miss a call during the dinner rush.">
+<meta property="og:image" content="https://fohreceptionist.com/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+:root{
+  --navy:#0b1b2b; --navy2:#10263b; --blue:#56b4ec; --blue-d:#4aa5dd;
+  --ink:#14222f; --muted:#566879; --line:#d9e2ea; --bg:#f4f7fa; --white:#fff;
+  --head:"Space Grotesk",system-ui,sans-serif; --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--body);color:var(--ink);background:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--head);line-height:1.15;margin:0;letter-spacing:-.01em;text-wrap:balance}
+/* hero */
+.hero{background:var(--navy);color:#fff;padding-bottom:84px}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:20px;padding-bottom:20px}
+.nav img{height:54px;width:auto;display:block}
+.nav a.btn{padding:10px 18px;font-size:.95rem}
+.hero-copy{padding-top:56px;max-width:700px}
+.eyebrow{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:18px}
+.hero h1{font-size:clamp(2.1rem,6vw,3.6rem);font-weight:700}
+.hero p.lead{font-size:1.15rem;color:#c9d6e2;margin:22px 0 32px;max-width:56ch}
+.btn{display:inline-block;background:var(--blue);color:var(--navy);font-weight:600;text-decoration:none;padding:14px 26px;border-radius:8px;transition:background .15s}
+.btn:hover{background:#7cc6f2}
+.btn.ghost{background:transparent;color:#fff;border:1.5px solid #3a526a;margin-left:10px}
+.btn.ghost:hover{border-color:var(--blue);color:var(--blue)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+.cta-row .btn.ghost{margin-left:0}
+/* sections */
+section{padding:76px 0}
+section.alt{background:var(--bg)}
+h2{font-size:clamp(1.6rem,4vw,2.3rem);font-weight:700}
+.sub{color:var(--muted);max-width:60ch;margin:14px 0 0}
+.grid{display:grid;gap:20px;margin-top:40px;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:26px}
+.card h3{font-size:1.15rem;margin-bottom:8px}
+.card p{margin:0;color:var(--muted);font-size:.97rem}
+.num{font-family:var(--head);font-weight:700;color:var(--blue-d);font-size:.95rem;margin-bottom:10px;display:block}
+.list{margin:36px 0 0;padding:0;list-style:none;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.list li{padding-left:30px;position:relative;color:var(--ink)}
+.list li::before{content:"";position:absolute;left:0;top:.5em;width:14px;height:8px;border-left:2.5px solid var(--blue-d);border-bottom:2.5px solid var(--blue-d);transform:rotate(-45deg) translateY(-3px)}
+.note{background:var(--navy);color:#fff;border-radius:14px;padding:34px;margin-top:40px}
+.note h3{font-size:1.3rem;margin-bottom:10px}
+.note p{margin:0;color:#c9d6e2;max-width:64ch}
+/* contact */
+.contact{background:var(--navy);color:#fff;text-align:left}
+.contact h2{color:#fff}
+.contact .sub{color:#c9d6e2}
+.mail{display:inline-block;margin-top:26px;font-family:var(--head);font-size:clamp(1.15rem,4vw,1.6rem);font-weight:500;color:var(--blue);text-decoration:none;border-bottom:2px solid #2c4660;padding-bottom:2px;word-break:break-word}
+.mail:hover{border-color:var(--blue)}
+footer{background:#08141f;color:#8da2b5;font-size:.88rem;padding:26px 0}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+@media (max-width:560px){.hero-copy{padding-top:36px}section{padding:56px 0}.nav img{height:46px}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="nav">
+      <img src="logo.png" alt="FOH AI" width="65" height="54">
+      <a class="btn" href="mailto:tyler@fohreceptionist.com?subject=FOH%20AI%20for%20my%20restaurant">Get in touch</a>
+    </div>
+    <div class="hero-copy">
+      <div class="eyebrow">AI phone receptionist for restaurants</div>
+      <h1>Never miss a call during the dinner rush.</h1>
+      <p class="lead">FOH AI answers your restaurant's phone, takes reservations and answers questions about hours, menu and location. Your staff stay on the floor with your guests.</p>
+      <div class="cta-row">
+        <a class="btn" href="mailto:tyler@fohreceptionist.com?subject=FOH%20AI%20pilot">Ask about a pilot</a>
+        <a class="btn ghost" href="#how">How it works</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="how">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <p class="sub">We set FOH AI up around your restaurant. Your number stays your number.</p>
+    <div class="grid">
+      <div class="card"><span class="num">01</span><h3>We learn your restaurant</h3><p>Your hours, menu, address, parking, reservation rules and anything else guests ask. We load it in and set the tone to match your place.</p></div>
+      <div class="card"><span class="num">02</span><h3>Calls get answered</h3><p>When the phone rings and nobody can pick up, FOH AI answers right away and talks with the guest in plain, polite language.</p></div>
+      <div class="card"><span class="num">03</span><h3>Staff stay in control</h3><p>Anything FOH AI can't handle goes to your team, with a clear note of what the guest needs, so nobody has to ask twice.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>What it handles</h2>
+    <p class="sub">The calls that pull your team away from guests.</p>
+    <ul class="list">
+      <li>Reservation requests</li>
+      <li>Opening hours and holiday hours</li>
+      <li>Menu, allergy and dietary questions</li>
+      <li>Directions and parking</li>
+      <li>Takeout and large-party enquiries</li>
+      <li>Messages for the owner or manager</li>
+    </ul>
+    <div class="note">
+      <h3>Built for independent restaurants</h3>
+      <p>FOH AI is new, and we are working with a small number of pilot restaurants first. If you want to be one of them, send a short email and we will set up a call.</p>
+    </div>
+  </div>
+</section>
+
+<section class="contact">
+  <div class="wrap">
+    <h2>Want to hear it for yourself?</h2>
+    <p class="sub">Email us and we will arrange a short call to show you how FOH AI would sound at your restaurant.</p>
+    <a class="mail" href="mailto:tyler@fohreceptionist.com">tyler@fohreceptionist.com</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; 2026 FOH AI. Langley, British Columbia, Canada.</span>
+    <span>fohreceptionist.com</span>
+  </div>
+</footer>
+
+</body>
+</html>
