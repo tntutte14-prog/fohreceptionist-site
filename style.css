@@ -112,3 +112,19 @@ footer a:hover{color:var(--blue-dark)}
   header nav a{font-size:.92rem}
   .page{padding:44px 0 56px}
 }
+
+/* features page */
+.feat{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.feat.flip>div:first-child{order:2}
+.feat.flip>.panel{order:1}
+.tick{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:10px}
+.tick li{position:relative;padding-left:28px}
+.tick li::before{content:"";position:absolute;left:2px;top:.42em;width:12px;height:7px;border-left:2.5px solid var(--blue-dark);border-bottom:2.5px solid var(--blue-dark);transform:rotate(-45deg)}
+.panel{background:var(--blue-tint);border:1px solid var(--blue-line);border-radius:16px;padding:28px;display:grid;gap:22px}
+.panel .stat b{display:block;font-size:2rem;line-height:1.1;letter-spacing:-.02em;color:var(--blue-dark)}
+.panel .stat span{color:var(--muted)}
+.panel.dark{background:#fff;border-color:var(--line);gap:10px;box-shadow:0 18px 40px -22px rgba(11,27,43,.35)}
+.mini{max-width:90%;padding:10px 14px;border-radius:14px;background:var(--soft);border:1px solid var(--line);font-size:.95rem;justify-self:start}
+.mini.out{background:var(--blue);border-color:var(--blue);color:var(--navy);justify-self:end}
+.mini small{display:block;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.7}
+@media (max-width:820px){.feat{grid-template-columns:1fr;gap:32px}.feat.flip>div:first-child,.feat.flip>.panel{order:0}}
