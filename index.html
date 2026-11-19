@@ -3,165 +3,221 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>FOH AI | AI phone receptionist for restaurants</title>
-<meta name="description" content="FOH AI answers your restaurant's phone: reservations, hours, your menu and guest questions, with a custom voice and your own login.">
+<title>FOH AI | AI phone answering for restaurants</title>
+<meta name="description" content="FOH AI answers your restaurant's phone: reservations, hours, your menu and guest questions, in a voice that fits your room, so your staff can focus on the guests in front of them.">
 <link rel="icon" type="image/png" href="favicon.png">
-<meta property="og:title" content="FOH AI | AI phone receptionist for restaurants">
-<meta property="og:description" content="FOH AI answers your restaurant's phone: reservations, hours, your menu and guest questions.">
+<meta property="og:title" content="FOH AI | AI phone answering for restaurants">
+<meta property="og:description" content="Reservations, hours, your menu and guest questions, answered every time the phone rings.">
 <meta property="og:image" content="https://fohreceptionist.com/logo.png">
-<meta name="theme-color" content="#f6f5f1">
+<meta name="theme-color" content="#f6f5f2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="home.css">
 <script src="tune.js"></script>
 </head>
 <body class="home">
 
-<header class="site">
-  <div class="wrap bar">
+<a class="announce" href="onboarding.html">Set your restaurant up online in about 15 minutes <span aria-hidden="true">→</span></a>
+
+<header class="hd">
+  <div class="hd-in">
     <a class="logo" href="/"><img src="logo-blue.png" alt="FOH AI" width="84" height="70"></a>
-    <nav aria-label="Main">
+    <nav class="hd-nav" id="siteNav" aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#voice">Voice</a>
+      <a href="#login">Your login</a>
       <a href="about.html">About</a>
-      <a href="#features">Features</a>
-      <a href="contact.html">Pricing</a>
       <a href="contact.html">Contact</a>
     </nav>
-    <a class="btn small" href="onboarding.html">Get started</a>
+    <a class="b-blue hd-cta" href="onboarding.html">Get started <span class="arw" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+    <button class="hd-menu" id="menuBtn" type="button" aria-controls="siteNav" aria-expanded="false" aria-label="Open menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </div>
 </header>
 
 <main>
-<section class="hero"><div class="wrap row">
-  <div>
-    <div class="eyebrow">AI phone receptionist for restaurants</div>
+<!-- hero: centred, with the demo card under it -->
+<section class="h-hero">
+  <div class="in">
+    <p class="mono-label">AI phone answering for restaurants</p>
     <h1>A receptionist that works <em>your way.</em></h1>
-    <p class="lede">Custom voice, custom rules, your own login, and a team that stays close. Call the demo on the phone and hear it for yourself.</p>
-    <div class="actions">
-      <a class="btn" href="onboarding.html">Get started</a>
+    <p class="h-sub">FOH AI answers your restaurant's phone: reservations, hours, your menu and guest questions. Your staff stay with the guests in front of them.</p>
+    <div class="demo-card">
+      <span class="demo-ico" aria-hidden="true"><img src="logo-blue.png" alt="" width="84" height="70"></span>
+      <span class="demo-txt"><b>Talk to FOH AI</b><small>Call our demo restaurant. It takes a minute.</small></span>
+      <a class="demo-go" data-demo-call href="tel:+17786525367" aria-label="Call the demo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg></a>
     </div>
-    <p class="kinds">Pizza, Italian, Chinese, sushi and more: <b>it learns your menu and your rules.</b></p>
+    <a class="h-link" href="onboarding.html">Or get your restaurant set up <span aria-hidden="true">→</span></a>
   </div>
+</section>
 
-  <div class="phone-wrap">
-    <div class="phone" role="group" aria-label="Demo phone">
-      <div class="screen">
-        <div class="status" aria-hidden="true">
-          <span class="clock">9:41</span>
-          <span class="icons">
-            <svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
-            <svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#fff" stroke-opacity=".5"/><rect x="2" y="2" width="16" height="8" rx="1.6"/><rect x="24" y="4" width="2" height="4" rx="1" fill-opacity=".5"/></svg>
-          </span>
-        </div>
+<!-- what it handles, in a running line -->
+<div class="ticker" aria-label="What FOH AI handles">
+  <span class="mono-label tk-title"><i aria-hidden="true"></i>On every call</span>
+  <div class="tk-track"><div class="tk-run">
+    <span>Reservations</span><span>Hours</span><span>Menu questions</span><span>General questions</span><span>Transfers to your staff</span><span>Several calls at once</span>
+    <span aria-hidden="true">Reservations</span><span aria-hidden="true">Hours</span><span aria-hidden="true">Menu questions</span><span aria-hidden="true">General questions</span><span aria-hidden="true">Transfers to your staff</span><span aria-hidden="true">Several calls at once</span>
+  </div></div>
+</div>
 
-        <div class="view recents" id="viewRecents">
-          <div class="rec-top"><span class="edit" aria-hidden="true">Edit</span><span class="demo-pill">Demo</span></div>
-          <div class="rec-title">Recents</div>
-          <div class="seg" aria-hidden="true"><span class="on">All</span><span>Missed</span></div>
-          <ul class="calls" id="calls" aria-label="Recent calls"></ul>
-          <div class="call-cta"><a class="btn" id="callDemo" href="tel:+17786525367">Call the demo</a></div>
-          <div class="tabbar" aria-hidden="true">
-            <span><svg viewBox="0 0 24 24"><path d="m12 2.5 2.9 6 6.6.7-5 4.5 1.4 6.5L12 17l-5.9 3.2 1.4-6.5-5-4.5 6.6-.7z"/></svg>Favourites</span>
-            <span class="on"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 10.6V6h-2v7.4l5.1 3.1 1-1.7z"/></svg>Recents</span>
-            <span><svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4.4 0-8 2.2-8 5v2h16v-2c0-2.8-3.6-5-8-5z"/></svg>Contacts</span>
-            <span><svg viewBox="0 0 24 24"><circle cx="5" cy="5" r="2.2"/><circle cx="12" cy="5" r="2.2"/><circle cx="19" cy="5" r="2.2"/><circle cx="5" cy="12" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="19" cy="12" r="2.2"/><circle cx="5" cy="19" r="2.2"/><circle cx="12" cy="19" r="2.2"/><circle cx="19" cy="19" r="2.2"/></svg>Keypad</span>
-            <span><svg viewBox="0 0 24 24"><path d="M6.5 7a5 5 0 0 0-1.2 9.8h13.4A5 5 0 1 0 14 10a5 5 0 0 0 1 3h-6a5 5 0 0 0-2.5-6zm0 2.2a2.8 2.8 0 1 1 0 5.6 2.8 2.8 0 0 1 0-5.6zm11 0a2.8 2.8 0 1 1 0 5.6 2.8 2.8 0 0 1 0-5.6z"/></svg>Voicemail</span>
+<!-- 1: every call, with the demo phone on a blue panel -->
+<section class="row-sec" id="how">
+  <div class="in two">
+    <div class="copy">
+      <p class="mono-label">Rush hour</p>
+      <h2>Every call answered, even on a full Friday.</h2>
+      <p>Lunch rush, a full house, one host at the door. FOH AI takes several calls at the same time, so a busy night doesn't mean missed calls. If it can't answer something safely, it puts the call through to your staff.</p>
+      <ul class="check-card">
+        <li>Reservations, booked while the guest is on the line</li>
+        <li>Hours, your menu and general questions</li>
+        <li>Several calls at the same time</li>
+        <li>Transfers to your staff when it can't answer safely</li>
+      </ul>
+      <div class="btn-row"><a class="b-blue" href="onboarding.html">Get started <span class="arw" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="b-plain" data-demo-call href="tel:+17786525367">Call the demo</a></div>
+    </div>
+
+    <div class="blue-panel">
+      <div class="phone" role="group" aria-label="Demo phone">
+        <div class="screen">
+          <div class="status" aria-hidden="true">
+            <span class="clock">9:41</span>
+            <span class="icons">
+              <svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+              <svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#fff" stroke-opacity=".5"/><rect x="2" y="2" width="16" height="8" rx="1.6"/><rect x="24" y="4" width="2" height="4" rx="1" fill-opacity=".5"/></svg>
+            </span>
           </div>
-        </div>
-
-        <div class="view calling" id="viewCall" hidden>
-          <span class="demo-pill">Demo</span>
-          <div class="who" id="callWho">Maple and Ember Bistro</div>
-          <div class="line">FOH AI receptionist</div>
-          <div class="num" id="callNum"></div>
-          <div class="hint" id="callHint"></div>
-          <div class="btns">
-            <button class="round no" type="button" id="callBack"><span class="c"><svg viewBox="0 0 24 24"><path d="M15.4 5.4 14 4l-8 8 8 8 1.4-1.4L8.8 12z"/></svg></span>Back</button>
-            <a class="round go" id="callGo" href="#"><span class="c"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg></span>Call</a>
+          <div class="view recents" id="viewRecents">
+            <div class="rec-top"><span class="edit" aria-hidden="true">Edit</span><span class="demo-pill">Demo</span></div>
+            <div class="rec-title">Recents</div>
+            <div class="seg" aria-hidden="true"><span class="on">All</span><span>Missed</span></div>
+            <ul class="calls" id="calls" aria-label="Recent calls"></ul>
+            <div class="call-cta"><a class="btn" id="callDemo" data-demo-call href="tel:+17786525367">Call the demo</a></div>
+            <div class="tabbar" aria-hidden="true">
+              <span><svg viewBox="0 0 24 24"><path d="m12 2.5 2.9 6 6.6.7-5 4.5 1.4 6.5L12 17l-5.9 3.2 1.4-6.5-5-4.5 6.6-.7z"/></svg>Favourites</span>
+              <span class="on"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 10.6V6h-2v7.4l5.1 3.1 1-1.7z"/></svg>Recents</span>
+              <span><svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4.4 0-8 2.2-8 5v2h16v-2c0-2.8-3.6-5-8-5z"/></svg>Contacts</span>
+              <span><svg viewBox="0 0 24 24"><circle cx="5" cy="5" r="2.2"/><circle cx="12" cy="5" r="2.2"/><circle cx="19" cy="5" r="2.2"/><circle cx="5" cy="12" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="19" cy="12" r="2.2"/><circle cx="5" cy="19" r="2.2"/><circle cx="12" cy="19" r="2.2"/><circle cx="19" cy="19" r="2.2"/></svg>Keypad</span>
+              <span><svg viewBox="0 0 24 24"><path d="M6.5 7a5 5 0 0 0-1.2 9.8h13.4A5 5 0 1 0 14 10a5 5 0 0 0 1 3h-6a5 5 0 0 0-2.5-6zm0 2.2a2.8 2.8 0 1 1 0 5.6 2.8 2.8 0 0 1 0-5.6zm11 0a2.8 2.8 0 1 1 0 5.6 2.8 2.8 0 0 1 0-5.6z"/></svg>Voicemail</span>
+            </div>
+          </div>
+          <div class="view calling" id="viewCall" hidden>
+            <span class="demo-pill">Demo</span>
+            <div class="who" id="callWho">Maple and Ember Bistro</div>
+            <div class="line">FOH AI receptionist</div>
+            <div class="num" id="callNum"></div>
+            <div class="hint" id="callHint"></div>
+            <div class="btns">
+              <button class="round no" type="button" id="callBack"><span class="c"><svg viewBox="0 0 24 24"><path d="M15.4 5.4 14 4l-8 8 8 8 1.4-1.4L8.8 12z"/></svg></span>Back</button>
+              <a class="round go" id="callGo" href="#"><span class="c"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg></span>Call</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div></section>
+</section>
 
-<section class="alt" id="features"><div class="wrap row">
-  <div>
-    <div class="eyebrow">Voice</div>
-    <h2>It sounds like your restaurant.</h2>
-    <p class="soft-text">Pick from our voices, or have one cloned with the speaker's permission. Set the greeting, the pace and the way it talks to guests, so it fits your room.</p>
-    <ul class="ticks"><li>Customisable voices</li><li>Voice cloning, with permission</li><li>Custom rules for how you run things</li></ul>
+<!-- 2: voice -->
+<section class="row-sec soft" id="voice">
+  <div class="in two flip">
+    <div class="copy">
+      <p class="mono-label">Voice</p>
+      <h2>It sounds like your restaurant.</h2>
+      <p>Pick from our voices, or have one cloned with the speaker's permission. Set the greeting, the pace and the way it talks to guests, so it fits your room.</p>
+      <ul class="check-card">
+        <li>Choose from our voices</li>
+        <li>Voice cloning, with the speaker's permission</li>
+        <li>Custom rules for how you run things</li>
+      </ul>
+    </div>
+    <div class="grey-panel">
+      <div class="voice-list">
+        <div class="v-item on"><span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span><b>Warm and relaxed</b><small>Voice option</small></span><span class="v-tag">Selected</span></div>
+        <div class="v-item"><span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span><b>Polished and calm</b><small>Voice option</small></span></div>
+        <div class="v-item"><span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span><b>Your own voice</b><small>Cloned, with permission</small></span></div>
+      </div>
+    </div>
   </div>
-  <div class="voices">
-    <div class="voice on"><i></i><span>Warm and relaxed<small>Voice option</small></span></div>
-    <div class="voice"><i></i><span>Polished and calm<small>Voice option</small></span></div>
-    <div class="voice"><i></i><span>Your own custom voice<small>Voice cloning</small></span></div>
+</section>
+
+<!-- 3: from the call to your login -->
+<section class="row-sec" id="login">
+  <div class="in">
+    <div class="sec-head">
+      <h2>From the call to your login.</h2>
+      <p>Your own login shows every call, the reservations it made and your usage. Change your settings whenever you like.</p>
+    </div>
+    <div class="cards3">
+      <article class="p-card">
+        <div class="p-vis blue"><div class="mini-list"><span><i></i>Every call <em>Review</em></span><span><i></i>Reservations made <em>View</em></span><span><i></i>Usage <em>View</em></span></div></div>
+        <h3>Your login</h3><p>Review every call, see the reservations it made, and check your usage.</p>
+      </article>
+      <article class="p-card">
+        <div class="p-vis"><div class="mini-set"><span>Greeting <b>On</b></span><span>Reservations <b>On</b></span><span>Transfers to staff <b>On</b></span></div></div>
+        <h3>Your settings</h3><p>Change your hours, rules and greeting any time, or ask us to.</p>
+      </article>
+      <article class="p-card">
+        <div class="p-vis"><div class="mini-num"><span class="mono-label">Your number</span><b>(604) 000-0000</b><small>Guests keep calling the number they know</small></div></div>
+        <h3>Keep your number</h3><p>Guests call the number they already know. Nothing changes for them.</p>
+      </article>
+    </div>
   </div>
-</div></section>
+</section>
 
-<section><div class="wrap row">
-  <div>
-    <div class="eyebrow">On the phone</div>
-    <h2>It handles the calls that pull your host away.</h2>
-    <p class="soft-text">Reservations, hours, your menu and most guest questions. If it can't answer something safely, it transfers the call to your staff.</p>
+<!-- 4: support, on a blue band like Maple's -->
+<section class="row-sec">
+  <div class="in">
+    <div class="blue-band">
+      <div class="bb-copy">
+        <p class="mono-label light">Support</p>
+        <h2>We stay close.</h2>
+        <p>We keep a close connection with every restaurant we work with.</p>
+        <a class="b-white" href="onboarding.html">Get started <span aria-hidden="true">→</span></a>
+      </div>
+      <ul class="bb-list">
+        <li><b>Fast support</b><span>Ask and we answer quickly.</span></li>
+        <li><b>Custom changes</b><span>Need something different? We build it.</span></li>
+        <li><b>Monthly check-ins</b><span>We go over how it's doing, together.</span></li>
+        <li><b>Easy onboarding</b><span>We set it up with you.</span></li>
+      </ul>
+    </div>
   </div>
-  <div class="panel"><ul class="ticks" style="margin:0">
-    <li>Reservations</li><li>Hours</li><li>Your menu</li><li>General questions about your restaurant</li><li>Transfers to your staff when it can't answer safely</li>
-  </ul></div>
-</div></section>
+</section>
 
-<section class="alt"><div class="wrap">
-  <div class="head"><div class="eyebrow">Rush hour</div><h2>Busy for you, easy for the phone.</h2>
-  <p class="soft-text">Lunch rush, Friday night, a full house. FOH AI takes several calls at the same time, so a rush doesn't mean missed calls.</p></div>
-  <ul class="cards">
-    <li class="card"><b>Several calls at once</b><span>No waiting for one call to end before the next.</span></li>
-    <li class="card"><b>Your host keeps seating</b><span>Nobody leaves the floor to grab the phone.</span></li>
-    <li class="card"><b>Staff step in when needed</b><span>Calls it can't answer safely go to your team.</span></li>
-  </ul>
-</div></section>
-
-<section><div class="wrap row">
-  <div>
-    <div class="eyebrow">Your login</div>
-    <h2>See it. Change it. Any time.</h2>
-    <p class="soft-text">Your own login shows your receptionist, every call, your usage and the reservations it's made. Update your settings whenever you like.</p>
+<!-- 5: coming soon -->
+<section class="row-sec soft">
+  <div class="in">
+    <div class="sec-head"><p class="mono-label">Coming soon</p><h2>What we're adding next.</h2></div>
+    <ul class="soon-grid">
+      <li><b>Takeout orders</b><span class="soon">Coming soon</span></li>
+      <li><b>Delivery orders</b><span class="soon">Coming soon</span></li>
+      <li><b>Dietary restriction questions</b><span class="soon">Coming soon</span></li>
+      <li><b>Takeout and delivery in your login</b><span class="soon">Coming soon</span></li>
+    </ul>
   </div>
-  <div class="dash"><div class="dash-head">Your receptionist</div>
-    <ul><li>Every call <em>Review</em></li><li>Reservations made <em>View</em></li><li>Usage <em>View</em></li><li>Settings <em>Change any time</em></li><li>Takeout and delivery <span class="soon">Coming soon</span></li></ul>
+</section>
+
+<section class="row-sec end">
+  <div class="in end-in">
+    <h2>Stop letting the phone cost you tables.</h2>
+    <p>Tell us about your restaurant. It takes about 15 to 20 minutes, and most answers are a tap.</p>
+    <div class="btn-row center"><a class="b-blue" href="onboarding.html">Get started <span class="arw" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="b-plain" data-demo-call href="tel:+17786525367">Call the demo</a></div>
   </div>
-</div></section>
-
-<section class="alt"><div class="wrap">
-  <div class="head"><div class="eyebrow">Support</div><h2>We stay close.</h2><p class="soft-text">We keep a close connection with every restaurant we work with.</p></div>
-  <ul class="cards">
-    <li class="card"><b>Fast support</b><span>Ask and we answer quickly.</span></li>
-    <li class="card"><b>Custom changes</b><span>Need something different? We build it.</span></li>
-    <li class="card"><b>Monthly check-ins</b><span>We go over how it's doing, together.</span></li>
-    <li class="card"><b>Easy onboarding</b><span>We set it up for you.</span></li>
-    <li class="card"><b>Keep your number</b><span>Guests call the number they know.</span></li>
-    <li class="card"><b>Review every call</b><span>Every call can be reviewed.</span></li>
-  </ul>
-</div></section>
-
-<section><div class="wrap">
-  <div class="head"><div class="eyebrow">Coming soon</div><h2>What we're adding next.</h2></div>
-  <ul class="chips"><li>Takeout orders <span class="soon">Coming soon</span></li><li>Delivery orders <span class="soon">Coming soon</span></li><li>Dietary restriction questions <span class="soon">Coming soon</span></li><li>Takeout and delivery in your login <span class="soon">Coming soon</span></li></ul>
-</div></section>
-
-<section class="band"><div class="wrap">
-  <h2>Stop letting the phone cost you tables.</h2>
-  <p>Tell us about your restaurant. It takes about 15 to 20 minutes, and most answers are a tap.</p>
-  <a class="btn" href="onboarding.html">Get started</a>
-</div></section>
+</section>
 </main>
 
-<footer class="site">
-  <div class="wrap">
-    <span>&copy; 2026 FOH AI, Langley, BC</span>
-    <nav aria-label="Legal"><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></nav>
+<footer class="ft">
+  <div class="in ft-in">
+    <div class="ft-brand"><img src="logo-blue.png" alt="FOH AI" width="84" height="70"><p>AI phone answering for restaurants.<br>Langley, BC</p></div>
+    <nav class="ft-col" aria-label="Product"><b>Product</b><a href="#how">How it works</a><a href="#voice">Voice</a><a href="#login">Your login</a><a href="onboarding.html">Get started</a></nav>
+    <nav class="ft-col" aria-label="Company"><b>Company</b><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+    <nav class="ft-col" aria-label="Legal"><b>Legal</b><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></nav>
   </div>
+  <div class="in ft-base">&copy; 2026 FOH AI</div>
 </footer>
 
 <script src="phone.js"></script>
+<script src="site.js"></script>
 </body>
 </html>

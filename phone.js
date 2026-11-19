@@ -88,9 +88,17 @@
   back.addEventListener('click', closeCall);
   calling.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeCall(); });
 
-  // "Call the demo": on a phone it dials straight away (a real phone link); on a computer it shows the number to call.
-  var demo = document.getElementById('callDemo');
-  if (demo) demo.addEventListener('click', function (e) { if (!touch) { e.preventDefault(); openCall(DEMO_NAME); } });
+  // "Call the demo" links (in the phone and on the page): on a phone they dial straight away (a real phone link);
+  // on a computer they show the number to call on the demo phone instead.
+  document.querySelectorAll('[data-demo-call]').forEach(function (a) {
+    a.setAttribute('href', 'tel:' + DEMO_E164);
+    a.addEventListener('click', function (e) {
+      if (touch) return;
+      e.preventDefault(); openCall(DEMO_NAME);
+      var p = document.querySelector('.phone'); var rect = p.getBoundingClientRect();
+      if (rect.top < 0 || rect.bottom > window.innerHeight) p.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'center' });
+    });
+  });
   document.querySelectorAll('[data-open-call]').forEach(function (b) {
     if (calling.contains(b) || recents.contains(b)) { b.addEventListener('click', function () { openCall(b.getAttribute('data-open-call')); }); return; }
     b.addEventListener('click', function () {

@@ -209,9 +209,7 @@ section.alt{background:var(--bg-2)}
 .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
 
 /* Homepage background: a very light shade of the logo blue in the top-left corner (where the logo is),
-   fading very gradually to the page colour in the opposite corner. Sections sit on it without their own colour. */
-body.home{background:linear-gradient(135deg,color-mix(in srgb,var(--brand) 16%,var(--page)) 0%,color-mix(in srgb,var(--brand) 7%,var(--page)) 38%,var(--page) 78%) fixed,var(--page)}
-body.home section.alt{background:transparent;border-block:1px solid var(--line)}
-body.home header.site{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;position:static}
+   fading very gradually to the page colour in the opposite corner. */
+body.home{background:linear-gradient(135deg,color-mix(in srgb,var(--brand) 14%,#f6f5f2) 0%,color-mix(in srgb,var(--brand) 6%,#f6f5f2) 35%,#f6f5f2 75%) fixed,#f6f5f2}
 @media (hover:none){body.home{background-attachment:scroll}}
 :root[data-theme="dark"] body.home{background:var(--page)}
