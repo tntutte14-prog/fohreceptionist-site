@@ -245,7 +245,7 @@ body.home .end2 h2{color:#fff;font-size:clamp(44px,6.4vw,92px);max-width:12ch;ma
 .ft-col b{color:rgb(255 255 255 / .9);font-size:14px;margin-bottom:4px}
 .ft-col a{color:var(--w-soft);text-decoration:none}
 .ft-col a:hover{color:#fff}
-.ft-base{margin-top:56px;padding-top:24px;border-top:1px solid rgb(255 255 255 / .1);font-size:14px;color:rgb(255 255 255 / .5)}
+body.home .ft-base{margin-top:56px;padding-top:24px;border-top:1px solid rgb(255 255 255 / .1);font-size:14px;color:rgb(255 255 255 / .5)}
 
 /* ---------- smaller screens ---------- */
 @media (max-width:1100px){

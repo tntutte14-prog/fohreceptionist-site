@@ -11,21 +11,34 @@
 <meta property="og:image" content="https://fohreceptionist.com/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="home.css">
 <script src="tune.js"></script>
+<style>
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;max-width:none;margin:32px 0 48px}
+.facts .fact{display:block;padding:18px;border:1px solid var(--line)}
+.facts .fact b,.facts .fact span{display:block}
+.prose h2{margin-top:40px;margin-bottom:12px}
+</style>
 </head>
-<body>
+<body class="home">
 
-<header class="site">
-  <div class="wrap bar">
+<a class="announce" href="onboarding.html">Set your restaurant up online in about 15 minutes <span aria-hidden="true">→</span></a>
+
+<header class="hd">
+  <div class="hd-in">
     <a class="logo" href="/"><img src="logo-blue.png" alt="FOH AI" width="84" height="70"></a>
-    <nav>
-      <a href="about.html">About</a><a href="/#features">Features</a>
-      <a href="contact.html">Pricing</a>
+    <nav class="hd-nav" id="siteNav" aria-label="Main">
+      <a href="index.html#features">What you get</a>
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#voice">Voice</a>
+      <a href="index.html#login">Your login</a>
+      <a href="about.html" aria-current="page">About</a>
       <a href="contact.html">Contact</a>
     </nav>
-    <a class="btn small" href="onboarding.html">Get started</a>
+    <a class="b-blue hd-cta" href="onboarding.html">Get started <span class="arw" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+    <button class="hd-menu" id="menuBtn" type="button" aria-controls="siteNav" aria-expanded="false" aria-label="Open menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </div>
 </header>
 
@@ -54,15 +67,16 @@
   </div>
 </main>
 
-<footer class="site">
-  <div class="wrap">
-    <span>&copy; 2026 FOH AI, Langley, BC</span>
-    <nav>
-      <a href="terms.html">Terms</a>
-      <a href="privacy.html">Privacy</a>
-    </nav>
+<footer class="ft2">
+  <div class="in ft-in">
+    <div class="ft-brand"><img src="logo-blue.png" alt="FOH AI" width="84" height="70"><p>Phone answering for restaurants.<br>Langley, BC</p></div>
+    <nav class="ft-col" aria-label="Product"><b>Product</b><a href="index.html#features">What you get</a><a href="index.html#how">How it works</a><a href="index.html#voice">Voice</a><a href="index.html#login">Your login</a><a href="onboarding.html">Get started</a></nav>
+    <nav class="ft-col" aria-label="Company"><b>Company</b><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+    <nav class="ft-col" aria-label="Legal"><b>Legal</b><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></nav>
   </div>
+  <div class="in ft-base">&copy; 2026 FOH AI</div>
 </footer>
 
+<script src="site.js"></script>
 </body>
 </html>
