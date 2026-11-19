@@ -8,6 +8,7 @@
   var API = 'https://restaurant-platform-production-1f82.up.railway.app/public/onboarding';
   var MAX_FILE = 5 * 1024 * 1024;   // per file
   var MAX_FILES = 3;                // per upload box
+  var MAX_ALL = 12 * 1024 * 1024;   // all files together
 
   var DAYS = [['mon', 'Monday'], ['tue', 'Tuesday'], ['wed', 'Wednesday'], ['thu', 'Thursday'], ['fri', 'Friday'], ['sat', 'Saturday'], ['sun', 'Sunday']];
   var DAY_NAMES = DAYS.map(function (d) { return d[1]; });
@@ -113,7 +114,7 @@
       { id: 'menu_differs', kind: 'yesno', label: 'Is your online menu different from your in-store menu?', req: true, when: function (s) { return Array.isArray(s.online_ordering) && s.online_ordering.length && s.online_ordering.indexOf('We don\'t have online ordering') < 0; } },
     ] },
     { id: 'extra', title: 'More about your restaurant', intro: 'Everything here is optional, but the more we know, the better your receptionist answers.', fields: [
-      { id: 'menu_files', kind: 'files', label: 'Upload your menu', help: 'PDF, Word, Excel or a photo. Up to 3 files, 5 MB each.' },
+      { id: 'menu_files', kind: 'files', label: 'Upload your menu', help: 'PDF, Word, Excel or a photo. Up to 3 files, 5 MB each, 12 MB for all files together.' },
       { id: 'menu_link', kind: 'url', label: 'Or a link to your online menu', placeholder: 'https://' },
       { id: 'policy_files', kind: 'files', label: 'Upload your restaurant policies', help: 'Optional. Up to 3 files, 5 MB each.' },
       { id: 'special_instructions', kind: 'area', label: 'Special instructions for your receptionist' },
@@ -382,12 +383,16 @@
   });
 
   // ---------- files ----------
+  // All files together must stay under 12 MB (what our server takes in one form).
+  var allBytes = function () { return Object.keys(files).reduce(function (n, k) { return n + files[k].reduce(function (m, x) { return m + x.size; }, 0); }, 0); };
   function addFiles(id, list) {
     var have = files[id] = files[id] || [];
     var problems = [];
     var jobs = Array.prototype.slice.call(list || []).map(function (file) {
       if (have.length >= MAX_FILES) { problems.push(file.name + ': only ' + MAX_FILES + ' files here'); return null; }
       if (file.size > MAX_FILE) { problems.push(file.name + ' is over 5 MB'); return null; }
+      if (!file.size) { problems.push(file.name + ' is empty'); return null; }
+      if (allBytes() + file.size > MAX_ALL) { problems.push(file.name + ' would take all your files over 12 MB together'); return null; }
       var entry = { name: file.name, type: file.type || 'application/octet-stream', size: file.size, data: null };
       have.push(entry);
       return new Promise(function (resolve) {
