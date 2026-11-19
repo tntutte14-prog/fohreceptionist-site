@@ -1,7 +1,7 @@
 // onboarding.js: the restaurant onboarding form.
 // Sections are described once (SECTIONS below); the page draws the current one, checks what is still missing,
-// and only lets the owner go forward when the section is complete. Back always works. Nothing is saved until Submit,
-// which sends everything to the FOH AI dashboard (Submissions page).
+// and only lets the owner go forward when the section is complete. Back always works. Finished sections are kept in
+// this browser for 2 days; Send delivers everything to the FOH AI dashboard (Submissions page), and only full forms arrive.
 (function () {
   'use strict';
 
@@ -27,9 +27,24 @@
   // Field kinds: text, email, tel, url, area (long text), choice (one or many, with "Other"), yesno, time, hours, files, note.
   // `when` shows a field only when it returns true. `req` = needed before Next.
   var has = function (id, v) { return function (s) { var x = s[id]; return Array.isArray(x) ? x.indexOf(v) >= 0 : x === v; }; };
+  // The order is on purpose: quick taps first (the restaurant, what it offers), typing in the middle,
+  // and the harder questions (POS and ordering systems) last, once the owner is invested.
   var SECTIONS = [
-    { id: 'details', title: 'Restaurant details', fields: [
+    { id: 'restaurant', title: 'Your restaurant', intro: 'Start with the basics. Most answers are a tap.', fields: [
+      { id: 'website', kind: 'import', label: 'Restaurant website', help: 'Have a website? We\'ll fill in what we can find, and you check it.' },
       { id: 'restaurant_name', kind: 'text', label: 'Restaurant name', req: true, placeholder: 'Enter restaurant name', auto: 'organization' },
+      { id: 'restaurant_type', kind: 'choice', multi: true, label: 'Type of restaurant', req: true, other: true, placeholder: 'Choose all that fit',
+        options: ['Casual dining', 'Fine dining', 'Fast food', 'Cafe / coffee shop', 'Bakery', 'Bar / pub', 'Pizza', 'Sushi / Japanese', 'Chinese', 'Indian', 'Mexican', 'Italian', 'Seafood', 'Other'] },
+      { id: 'locations', kind: 'choice', label: 'How many locations do you have?', req: true, options: ['1', '2', '3', '4', '5 or more'], half: true },
+      { kind: 'note', when: function (s) { return s.locations && s.locations !== '1'; }, text: 'Fill out this form once for each location, starting with this one. Each location can have its own hours, menu and phone number.' },
+      { id: 'location_name', kind: 'text', label: 'Which location is this?', req: true, placeholder: 'For example: Downtown', when: function (s) { return s.locations && s.locations !== '1'; } },
+    ] },
+    { id: 'services', title: 'What you offer', intro: 'Your answers here decide which questions come next.', fields: [
+      { id: 'services', kind: 'choice', multi: true, label: 'Which services does your restaurant offer?', req: true, placeholder: 'Choose all that apply',
+        options: ['Dine-in', 'Pickup / Takeout', 'Delivery', 'Reservations', 'Catering / Large orders'] },
+      { id: 'catering_details', kind: 'area', label: 'Tell us about catering and large orders', help: 'For example: how much notice you need, and the smallest order.', when: has('services', 'Catering / Large orders') },
+    ] },
+    { id: 'contact', title: 'How to reach you', fields: [
       { id: 'restaurant_phone', kind: 'tel', label: 'Restaurant phone number', req: true, help: 'This is the number your AI receptionist will answer.', placeholder: '(604) 000-0000' },
       { kind: 'note', title: 'Your contact information', text: 'Your personal or business contact details. We use these to reach you, not as the restaurant\'s incoming phone number.' },
       { id: 'contact_name', kind: 'text', label: 'Your full name', req: true, auto: 'name', half: true },
@@ -40,94 +55,85 @@
       { id: 'address_city', kind: 'text', label: 'City', req: true, auto: 'address-level2', third: true },
       { id: 'address_region', kind: 'text', label: 'Province or state', req: true, auto: 'address-level1', third: true },
       { id: 'address_postal', kind: 'text', label: 'Postal code', req: true, auto: 'postal-code', third: true },
-      { id: 'website', kind: 'url', label: 'Restaurant website', placeholder: 'https://yourrestaurant.com', help: 'Optional.' },
-      { id: 'locations', kind: 'choice', label: 'How many locations do you have?', req: true, options: ['1', '2', '3', '4', '5 or more'], row: true },
-      { kind: 'note', when: function (s) { return s.locations && s.locations !== '1'; }, text: 'Fill out this form once for each location, starting with this one. Each location can have its own hours, menu and phone number.' },
-      { id: 'location_name', kind: 'text', label: 'Which location is this?', req: true, placeholder: 'For example: Downtown', when: function (s) { return s.locations && s.locations !== '1'; } },
-      { id: 'restaurant_type', kind: 'choice', multi: true, label: 'Type of restaurant', help: 'Choose all that fit.', req: true, other: true,
-        options: ['Casual dining', 'Fine dining', 'Fast food', 'Cafe / coffee shop', 'Bakery', 'Bar / pub', 'Pizza', 'Sushi / Japanese', 'Chinese', 'Indian', 'Mexican', 'Italian', 'Seafood', 'Other'] },
     ] },
-    { id: 'hours', title: 'Business hours', intro: 'We\'ve filled in common hours. Change any day, or mark it closed.', fields: [
+    { id: 'hours', title: 'Business hours', intro: 'We\'ve filled in common hours. Untick a day you\'re closed, and tap a time to change it.', fields: [
       { id: 'hours', kind: 'hours', label: 'Weekly opening hours', req: true },
       { id: 'kitchen_separate', kind: 'yesno', label: 'Does the kitchen close before the restaurant does?', req: true },
       { id: 'kitchen_hours', kind: 'hours', closeOnly: true, label: 'Kitchen closing time', req: true, from: 'hours', when: has('kitchen_separate', 'yes') },
       { id: 'dinein_separate', kind: 'yesno', label: 'Are dine-in hours different from the hours above?', req: true },
       { id: 'dinein_hours', kind: 'hours', label: 'Dine-in hours', req: true, from: 'hours', when: has('dinein_separate', 'yes') },
       { id: 'happy_hour', kind: 'yesno', label: 'Do you offer happy hour?', req: true },
-      { id: 'happy_days', kind: 'choice', multi: true, label: 'Which days?', req: true, options: DAY_NAMES, when: has('happy_hour', 'yes'), row: true },
+      { id: 'happy_days', kind: 'choice', multi: true, label: 'Which days?', req: true, options: DAY_NAMES, placeholder: 'Choose days', when: has('happy_hour', 'yes') },
       { id: 'happy_start', kind: 'time', label: 'Starts', req: true, def: '15:00', half: true, when: has('happy_hour', 'yes') },
       { id: 'happy_end', kind: 'time', label: 'Ends', req: true, def: '18:00', half: true, when: has('happy_hour', 'yes') },
-      { id: 'happy_for', kind: 'choice', multi: true, label: 'Happy hour is for', req: true, options: ['Food', 'Drinks'], when: has('happy_hour', 'yes'), row: true },
-      { id: 'happy_details', kind: 'area', label: 'Other happy hour details', help: 'Optional.', when: has('happy_hour', 'yes') },
+      { id: 'happy_for', kind: 'choice', multi: true, label: 'Happy hour is for', req: true, options: ['Food', 'Drinks'], placeholder: 'Food, drinks or both', when: has('happy_hour', 'yes') },
+      { id: 'happy_details', kind: 'area', label: 'Other happy hour details', when: has('happy_hour', 'yes') },
     ] },
-    { id: 'services', title: 'Services offered', intro: 'Your answers here decide which questions come next.', fields: [
-      { id: 'services', kind: 'choice', multi: true, label: 'Which services does your restaurant offer?', help: 'Choose all that apply.', req: true,
-        options: ['Dine-in', 'Pickup / Takeout', 'Delivery', 'Reservations', 'Catering / Large orders'] },
-      { id: 'catering_details', kind: 'area', label: 'Tell us about catering and large orders', help: 'Optional. For example: how much notice you need, and the smallest order.', when: has('services', 'Catering / Large orders') },
+    { id: 'reservations', title: 'Reservations', when: has('services', 'Reservations'), fields: [
+      { id: 'res_system', kind: 'choice', label: 'Which reservation system do you use?', req: true, other: true,
+        options: ['OpenTable', 'Resy', 'SevenRooms', 'Tock', 'Yelp Reservations', 'Our own system', 'Phone only', 'Other'] },
+      { id: 'res_max_party', kind: 'choice', label: 'Largest party you book', req: true, other: true, half: true, options: ['4', '6', '8', '10', '12', '15', '20', 'Other'] },
+      { id: 'res_length', kind: 'choice', label: 'Usual table time', req: true, other: true, half: true, options: ['60 min', '75 min', '90 min', '2 hours', 'Other'] },
+      { id: 'res_ahead', kind: 'choice', label: 'How far ahead can guests book?', req: true, other: true, options: ['1 week', '2 weeks', '30 days', '60 days', '90 days', 'Other'] },
+      { id: 'res_same_day', kind: 'yesno', label: 'Do you take same-day reservations?', req: true },
+      { id: 'res_deposit', kind: 'yesno', label: 'Do you require deposits?', req: true },
+      { id: 'res_change', kind: 'yesno', label: 'Can callers change a reservation?', req: true },
+      { id: 'res_cancel', kind: 'yesno', label: 'Can callers cancel a reservation?', req: true },
+      { id: 'res_seating', kind: 'choice', multi: true, label: 'Seating guests can ask for', other: true, placeholder: 'Choose all that apply', options: ['Indoor', 'Patio', 'Bar', 'Private dining', 'Other'] },
+      { id: 'res_large_rules', kind: 'area', label: 'Rules for large parties' },
+      { id: 'res_cancel_policy', kind: 'area', label: 'Cancellation policy' },
     ] },
     { id: 'pickup', title: 'Pickup', when: has('services', 'Pickup / Takeout'), fields: [
-      { id: 'pickup_prep', kind: 'choice', label: 'Typical preparation time', req: true, other: true, row: true, options: ['10 min', '15 min', '20 min', '25 min', '30 min', '45 min', '60 min', 'Other'] },
+      { id: 'pickup_prep', kind: 'choice', label: 'Typical preparation time', req: true, other: true, half: true, options: ['10 min', '15 min', '20 min', '25 min', '30 min', '45 min', '60 min', 'Other'] },
       { id: 'pickup_asap', kind: 'yesno', label: 'Do you take orders for as soon as possible?', req: true },
       { id: 'pickup_scheduled', kind: 'yesno', label: 'Do you take orders for a later time?', req: true },
-      { id: 'pickup_notice', kind: 'choice', label: 'Least notice you need for a later order', req: true, other: true, row: true, options: ['15 min', '30 min', '45 min', '60 min', 'Other'], when: has('pickup_scheduled', 'yes') },
-      { id: 'pickup_payment', kind: 'choice', multi: true, label: 'How do guests pay for pickup?', req: true, other: true, options: ['Online', 'In person', 'Over the phone', 'Other'] },
-      { id: 'pickup_where', kind: 'choice', multi: true, label: 'Where do guests pick up?', req: true, other: true, options: ['Front counter', 'Drive-through', 'Pickup shelf or area', 'Other'] },
+      { id: 'pickup_notice', kind: 'choice', label: 'Least notice you need for a later order', req: true, other: true, half: true, options: ['15 min', '30 min', '45 min', '60 min', 'Other'], when: has('pickup_scheduled', 'yes') },
+      { id: 'pickup_payment', kind: 'choice', multi: true, label: 'How do guests pay for pickup?', req: true, other: true, placeholder: 'Choose all that apply', options: ['Online', 'In person', 'Over the phone', 'Other'] },
+      { id: 'pickup_where', kind: 'choice', multi: true, label: 'Where do guests pick up?', req: true, other: true, placeholder: 'Choose all that apply', options: ['Front counter', 'Drive-through', 'Pickup shelf or area', 'Other'] },
       { id: 'pickup_reject', kind: 'yesno', label: 'Can staff turn down an order?', req: true },
-      { id: 'pickup_busy', kind: 'choice', multi: true, label: 'When it gets busy', req: true, other: true, options: ['Give longer wait times', 'Pause new orders', 'Send calls to staff', 'Other'] },
-      { id: 'pickup_instructions', kind: 'area', label: 'Pickup instructions for guests', help: 'Optional. For example: where to park or which door to use.' },
+      { id: 'pickup_busy', kind: 'choice', multi: true, label: 'When it gets busy', req: true, other: true, placeholder: 'Choose all that apply', options: ['Give longer wait times', 'Pause new orders', 'Send calls to staff', 'Other'] },
+      { id: 'pickup_instructions', kind: 'area', label: 'Pickup instructions for guests', help: 'For example: where to park or which door to use.' },
       { id: 'pickup_separate', kind: 'yesno', label: 'Are pickup hours different from your opening hours?', req: true },
       { id: 'pickup_hours', kind: 'hours', label: 'Pickup hours', req: true, from: 'hours', when: has('pickup_separate', 'yes') },
     ] },
     { id: 'delivery', title: 'Delivery', when: has('services', 'Delivery'), fields: [
-      { id: 'delivery_by', kind: 'choice', multi: true, label: 'Who delivers your orders?', help: 'Choose all that apply.', req: true, other: true, options: ['Our own drivers', 'DoorDash', 'Uber Eats', 'SkipTheDishes', 'Other'] },
-      { id: 'delivery_time', kind: 'choice', label: 'Typical delivery time', req: true, other: true, row: true, options: ['20 min', '30 min', '45 min', '60 min', '75 min', '90 min', 'Other'] },
-      { id: 'delivery_fee', kind: 'choice', label: 'Delivery fee', req: true, other: true, options: ['Free', 'Fixed fee', 'Based on distance', 'Depends on the order', 'Other'] },
+      { id: 'delivery_by', kind: 'choice', multi: true, label: 'Who delivers your orders?', req: true, other: true, placeholder: 'Choose all that apply', options: ['Our own drivers', 'DoorDash', 'Uber Eats', 'SkipTheDishes', 'Other'] },
+      { id: 'delivery_time', kind: 'choice', label: 'Typical delivery time', req: true, other: true, half: true, options: ['20 min', '30 min', '45 min', '60 min', '75 min', '90 min', 'Other'] },
+      { id: 'delivery_radius', kind: 'choice', label: 'How far do you deliver?', req: true, other: true, half: true, options: ['3 km', '5 km', '10 km', '15 km', '20 km', 'Other'] },
+      { id: 'delivery_fee', kind: 'choice', label: 'Delivery fee', req: true, other: true, half: true, options: ['Free', 'Fixed fee', 'Based on distance', 'Depends on the order', 'Other'] },
+      { id: 'delivery_min', kind: 'choice', label: 'Minimum order', req: true, other: true, half: true, options: ['No minimum', '$10', '$15', '$20', '$25', '$30', 'Other'] },
       { id: 'delivery_fee_amount', kind: 'text', label: 'How much is the fixed fee?', req: true, placeholder: '$5.00', when: has('delivery_fee', 'Fixed fee'), half: true },
-      { id: 'delivery_min', kind: 'choice', label: 'Minimum order', req: true, other: true, row: true, options: ['No minimum', '$10', '$15', '$20', '$25', '$30', 'Other'] },
-      { id: 'delivery_radius', kind: 'choice', label: 'How far do you deliver?', req: true, other: true, row: true, options: ['3 km', '5 km', '10 km', '15 km', '20 km', 'Other'] },
-      { id: 'delivery_areas', kind: 'area', label: 'Delivery areas', help: 'Optional. Postal codes or neighbourhoods.' },
+      { id: 'delivery_areas', kind: 'area', label: 'Delivery areas', help: 'Postal codes or neighbourhoods.' },
       { id: 'delivery_scheduled', kind: 'yesno', label: 'Can guests order delivery for a later time?', req: true },
       { id: 'delivery_pause', kind: 'yesno', label: 'Do you pause delivery when it gets busy?', req: true },
       { id: 'delivery_separate', kind: 'yesno', label: 'Are delivery hours different from your opening hours?', req: true },
       { id: 'delivery_hours', kind: 'hours', label: 'Delivery hours', req: true, from: 'hours', when: has('delivery_separate', 'yes') },
     ] },
-    { id: 'reservations', title: 'Reservations', when: has('services', 'Reservations'), fields: [
-      { id: 'res_system', kind: 'choice', label: 'Which reservation system do you use?', req: true, other: true,
-        options: ['OpenTable', 'Resy', 'SevenRooms', 'Tock', 'Yelp Reservations', 'Our own system', 'Phone only', 'Other'] },
-      { id: 'res_max_party', kind: 'choice', label: 'Largest party you take a reservation for', req: true, other: true, row: true, options: ['4', '6', '8', '10', '12', '15', '20', 'Other'] },
-      { id: 'res_ahead', kind: 'choice', label: 'How far ahead can guests book?', req: true, other: true, row: true, options: ['1 week', '2 weeks', '30 days', '60 days', '90 days', 'Other'] },
-      { id: 'res_length', kind: 'choice', label: 'How long is a table usually booked for?', req: true, other: true, row: true, options: ['60 min', '75 min', '90 min', '2 hours', 'Other'] },
-      { id: 'res_same_day', kind: 'yesno', label: 'Do you take same-day reservations?', req: true },
-      { id: 'res_deposit', kind: 'yesno', label: 'Do you require deposits?', req: true },
-      { id: 'res_change', kind: 'yesno', label: 'Can callers change a reservation?', req: true },
-      { id: 'res_cancel', kind: 'yesno', label: 'Can callers cancel a reservation?', req: true },
-      { id: 'res_seating', kind: 'choice', multi: true, label: 'Seating guests can ask for', help: 'Optional. Choose all that apply.', other: true, options: ['Indoor', 'Patio', 'Bar', 'Private dining', 'Other'] },
-      { id: 'res_large_rules', kind: 'area', label: 'Rules for large parties', help: 'Optional.' },
-      { id: 'res_cancel_policy', kind: 'area', label: 'Cancellation policy', help: 'Optional.' },
-    ] },
-    { id: 'systems', title: 'POS and ordering systems', fields: [
-      { id: 'pos', kind: 'choice', label: 'Which POS system do you use?', req: true, other: true,
-        options: ['Toast', 'Square', 'Clover', 'Lightspeed', 'TouchBistro', 'Aloha', 'Oracle MICROS', 'Revel', 'Other', 'Not sure'] },
-      { id: 'online_ordering', kind: 'choice', multi: true, label: 'Where do guests order online?', help: 'Choose all that apply.', req: true, other: true, none: 'We don\'t have online ordering',
-        options: ['Our own website', 'Toast Online Ordering', 'Square Online', 'Deliverect', 'DoorDash', 'Uber Eats', 'SkipTheDishes', 'Other', 'We don\'t have online ordering'] },
-      { id: 'multi_systems', kind: 'yesno', label: 'Do you use more than one system for orders?', req: true },
-      { id: 'menu_differs', kind: 'yesno', label: 'Is your online menu different from your in-store menu?', req: true, when: function (s) { return Array.isArray(s.online_ordering) && s.online_ordering.length && s.online_ordering.indexOf('We don\'t have online ordering') < 0; } },
-    ] },
     { id: 'extra', title: 'More about your restaurant', intro: 'Everything here is optional, but the more we know, the better your receptionist answers.', fields: [
       { id: 'menu_files', kind: 'files', label: 'Upload your menu', help: 'PDF, Word, Excel or a photo. Up to 3 files, 5 MB each, 12 MB for all files together.' },
       { id: 'menu_link', kind: 'url', label: 'Or a link to your online menu', placeholder: 'https://' },
-      { id: 'policy_files', kind: 'files', label: 'Upload your restaurant policies', help: 'Optional. Up to 3 files, 5 MB each.' },
+      { id: 'policy_files', kind: 'files', label: 'Upload your restaurant policies', help: 'Up to 3 files, 5 MB each.' },
       { id: 'special_instructions', kind: 'area', label: 'Special instructions for your receptionist' },
       { id: 'common_questions', kind: 'area', label: 'Questions guests often ask' },
       { id: 'allergens', kind: 'area', label: 'Allergens and dietary information' },
       { id: 'promotions', kind: 'area', label: 'Promotions and specials' },
       { id: 'anything_else', kind: 'area', label: 'Anything else we should know?' },
     ] },
+    { id: 'systems', title: 'POS and ordering systems', intro: 'Last section. If you\'re not sure, pick the closest answer and we\'ll check with you.', fields: [
+      { id: 'pos', kind: 'choice', label: 'Which POS system do you use?', req: true, other: true,
+        options: ['Toast', 'Square', 'Clover', 'Lightspeed', 'TouchBistro', 'Aloha', 'Oracle MICROS', 'Revel', 'Other', 'Not sure'] },
+      { id: 'online_ordering', kind: 'choice', multi: true, label: 'Where do guests order online?', req: true, other: true, none: 'We don\'t have online ordering', placeholder: 'Choose all that apply',
+        options: ['Our own website', 'Toast Online Ordering', 'Square Online', 'Deliverect', 'DoorDash', 'Uber Eats', 'SkipTheDishes', 'Other', 'We don\'t have online ordering'] },
+      { id: 'multi_systems', kind: 'yesno', label: 'Do you use more than one system for orders?', req: true },
+      { id: 'menu_differs', kind: 'yesno', label: 'Is your online menu different from your in-store menu?', req: true, when: function (s) { return Array.isArray(s.online_ordering) && s.online_ordering.length && s.online_ordering.indexOf('We don\'t have online ordering') < 0; } },
+    ] },
     { id: 'review', title: 'Review', review: true, fields: [] },
   ];
 
   // ---------- state ----------
   var S = { hours: defaultHours() };
+  var openDD = null;         // the dropdown that is open, kept open while the section redraws
+  var importing = false; var importNote = null; var fromSite = {};
   var files = {};            // field id -> [{name,type,size,data}]
   var cur = 0;
   var touched = false;
@@ -160,7 +166,7 @@
       case 'note': case 'files': return true;
       case 'email': return f.req ? EMAIL.test(String(v || '').trim()) : (!v || EMAIL.test(String(v).trim()));
       case 'tel': return f.req ? telOk(v) : (!v || telOk(v));
-      case 'url': return urlOk(v) && (!f.req || Boolean(v));
+      case 'url': case 'import': return urlOk(v) && (!f.req || Boolean(v));
       case 'hours': return hoursOk(v, f.closeOnly);
       case 'choice':
         if (f.multi) {
@@ -172,7 +178,7 @@
       default: return f.req ? Boolean(String(v || '').trim()) : true;
     }
   }
-  var needed = function (f) { return f.kind !== 'note' && (f.req || ['email', 'tel', 'url'].indexOf(f.kind) >= 0 || (f.kind === 'choice' && f.other)); };
+  var needed = function (f) { return f.kind !== 'note' && (f.req || ['email', 'tel', 'url', 'import'].indexOf(f.kind) >= 0 || (f.kind === 'choice' && f.other)); };
   function missingIn(sec) { return visibleFields(sec).filter(function (f) { return needed(f) && !fieldDone(f); }); }
   var sectionDone = function (sec) { return sec.review || missingIn(sec).length === 0; };
 
@@ -193,7 +199,7 @@
   var mins = function (t) { var p = String(t).split(':'); return Number(p[0]) * 60 + Number(p[1]); };
 
   function labelFor(f, tag) {
-    return '<' + (tag || 'label') + ' class="ob-label"' + (tag ? '' : ' for="f_' + f.id + '"') + '>' + esc(f.label) + (f.req ? '' : ' <span class="opt">(optional)</span>') + '</' + (tag || 'label') + '>' + (f.help && f.help !== 'Optional.' ? '<p class="ob-help" id="h_' + f.id + '">' + esc(f.help) + '</p>' : '');
+    return '<' + (tag || 'label') + ' class="ob-label"' + (tag ? '' : ' for="f_' + f.id + '"') + '>' + esc(f.label) + (f.req ? '' : ' <span class="opt">(optional)</span>') + (fromSite[f.id] ? ' <span class="ob-from">From your website</span>' : '') + '</' + (tag || 'label') + '>' + (f.help && f.help !== 'Optional.' ? '<p class="ob-help" id="h_' + f.id + '">' + esc(f.help) + '</p>' : '');
   }
   function renderField(f) {
     var cls = 'ob-field' + (f.half ? ' half' : '') + (f.third ? ' third' : '');
@@ -207,29 +213,40 @@
       case 'area':
         return '<div class="' + cls + '" data-f="' + f.id + '">' + labelFor(f) + '<textarea class="ob-input" id="f_' + f.id + '" name="' + f.id + '" rows="3" maxlength="5000"' + desc + '>' + esc(v || '') + '</textarea></div>';
       case 'yesno':
-        return '<fieldset class="' + cls + '" data-f="' + f.id + '">' + labelFor(f, 'legend') + '<div class="ob-yesno">' +
-          ['yes', 'no'].map(function (o) { return '<label class="tile"><input type="radio" name="' + f.id + '" value="' + o + '"' + (v === o ? ' checked' : '') + '><span>' + (o === 'yes' ? 'Yes' : 'No') + '</span></label>'; }).join('') + '</div></fieldset>';
+        return '<fieldset class="' + cls + ' ob-yn-row" data-f="' + f.id + '">' + labelFor(f, 'legend') + '<div class="ob-yn">' +
+          ['yes', 'no'].map(function (o) { return '<label class="yn"><input type="radio" name="' + f.id + '" value="' + o + '"' + (v === o ? ' checked' : '') + '><span>' + (o === 'yes' ? 'Yes' : 'No') + '</span></label>'; }).join('') + '</div></fieldset>';
       case 'choice':
-        var sel = f.multi ? (Array.isArray(v) ? v : []) : v;
-        var tiles = f.options.map(function (o) {
-          var on = f.multi ? sel.indexOf(o) >= 0 : sel === o;
-          return '<label class="tile' + (f.multi ? ' check' : '') + '"><input type="' + (f.multi ? 'checkbox' : 'radio') + '" name="' + f.id + '" value="' + esc(o) + '"' + (on ? ' checked' : '') + '><span>' + esc(o) + '</span></label>';
+        var sel = f.multi ? (Array.isArray(v) ? v : []) : (v ? [v] : []);
+        var opts = f.options.map(function (o) {
+          var on = sel.indexOf(o) >= 0;
+          return '<label class="dd-opt' + (f.multi ? ' multi' : '') + '"><input type="' + (f.multi ? 'checkbox' : 'radio') + '" name="' + f.id + '" value="' + esc(o) + '"' + (on ? ' checked' : '') + '><span>' + esc(o) + '</span></label>';
         }).join('');
-        var showOther = f.other && (f.multi ? sel.indexOf('Other') >= 0 : sel === 'Other');
-        return '<fieldset class="' + cls + '" data-f="' + f.id + '">' + labelFor(f, 'legend') + '<div class="ob-tiles' + (f.row ? ' row' : '') + '">' + tiles + '</div>' +
-          (showOther ? '<div class="ob-other"><label class="sr" for="f_' + f.id + '_other">Please specify</label><input class="ob-input" id="f_' + f.id + '_other" name="' + f.id + '_other" placeholder="Please specify" value="' + esc(S[f.id + '_other'] || '') + '" maxlength="300"></div>' : '') + '</fieldset>';
+        var shown = sel.length ? (sel.length <= 2 ? sel.join(', ') : sel.slice(0, 2).join(', ') + ' +' + (sel.length - 2)) : (f.placeholder || 'Choose one');
+        var isOpen = openDD === f.id;
+        var showOther = f.other && sel.indexOf('Other') >= 0;
+        return '<div class="' + cls + '" data-f="' + f.id + '"><span class="ob-label" id="l_' + f.id + '">' + esc(f.label) + (f.req ? '' : ' <span class="opt">(optional)</span>') + (fromSite[f.id] ? ' <span class="ob-from">From your website</span>' : '') + '</span>' + (f.help ? '<p class="ob-help" id="h_' + f.id + '">' + esc(f.help) + '</p>' : '') +
+          '<div class="dd' + (isOpen ? ' open' : '') + '"><button type="button" class="dd-btn' + (sel.length ? '' : ' empty') + '" id="f_' + f.id + '" data-dd="' + f.id + '" aria-haspopup="true" aria-expanded="' + isOpen + '" aria-labelledby="l_' + f.id + ' f_' + f.id + '_v"><span id="f_' + f.id + '_v" class="dd-val">' + esc(shown) + '</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>' +
+          '<div class="dd-list" role="group" aria-labelledby="l_' + f.id + '"' + (isOpen ? '' : ' hidden') + '>' + opts + '</div></div>' +
+          (showOther ? '<div class="ob-other"><label class="sr" for="f_' + f.id + '_other">Please specify</label><input class="ob-input" id="f_' + f.id + '_other" name="' + f.id + '_other" placeholder="Please specify" value="' + esc(S[f.id + '_other'] || '') + '" maxlength="300"></div>' : '') + '</div>';
+      case 'import':
+        return '<div class="ob-import" data-f="' + f.id + '"><label class="ob-label" for="f_website">' + esc(f.label) + ' <span class="opt">(optional)</span></label><p class="ob-help" id="h_website">' + esc(f.help) + '</p>' +
+          '<div class="ob-import-row"><input class="ob-input" id="f_website" name="website" type="url" inputmode="url" autocomplete="url" placeholder="yourrestaurant.com" value="' + esc(v || '') + '" maxlength="300" aria-describedby="h_website"><button type="button" class="ob-fill" data-import' + (importing ? ' disabled' : '') + '>' + (importing ? 'Reading…' : 'Fill in') + '</button></div>' +
+          (importNote ? '<p class="ob-import-note ' + importNote.kind + '" role="status">' + esc(importNote.text) + '</p>' : '') + '</div>';
       case 'time':
         if (!v && f.def) S[f.id] = v = f.def;
         return '<div class="' + cls + '" data-f="' + f.id + '">' + labelFor(f) + '<button type="button" class="ob-time" aria-haspopup="dialog" aria-expanded="false" id="f_' + f.id + '" data-time="' + f.id + '">' + (v ? esc(fmtTime(v)) : 'Choose time') + '</button></div>';
       case 'hours':
         if (!v) S[f.id] = v = f.from && S[f.from] ? copyHours(S[f.from]) : defaultHours();
         return '<fieldset class="ob-field" data-f="' + f.id + '">' + labelFor(f, 'legend') + '<div class="ob-hours">' + DAYS.map(function (d) {
-          var x = v[d[0]];
-          var modes = f.closeOnly ? [['open', 'Closes at'], ['closed', 'Closed'], ['24h', '24 hours']] : [['open', 'Open'], ['closed', 'Closed'], ['24h', '24 hours']];
-          var times = x.mode === 'open' ? (f.closeOnly ? timeBtn(f.id, d[0], 'close', x.close, 'Kitchen closes') : timeBtn(f.id, d[0], 'open', x.open, 'Opens') + '<span class="ob-tlabel">to</span>' + timeBtn(f.id, d[0], 'close', x.close, 'Closes')) + (!f.closeOnly && x.open && x.close && mins(x.close) <= mins(x.open) ? '<span class="nextday">next day</span>' : '') : '<span class="ob-day-note">' + (x.mode === 'closed' ? 'Closed all day' : f.closeOnly ? 'Kitchen open all day and night' : 'Open all day and night') + '</span>';
-          return '<div class="ob-day"><b>' + d[1] + '</b><div class="ob-modes" role="radiogroup" aria-label="' + d[1] + '">' + modes.map(function (m) {
-            return '<label class="mode"><input type="radio" name="' + f.id + '_' + d[0] + '" value="' + m[0] + '" data-hours="' + f.id + '" data-day="' + d[0] + '"' + (x.mode === m[0] ? ' checked' : '') + '><span>' + m[1] + '</span></label>';
-          }).join('') + '</div><div class="ob-times">' + times + '</div></div>';
+          var x = v[d[0]]; var on = x.mode !== 'closed'; var all = x.mode === '24h';
+          var times = all ? '<span class="ob-day-note">' + (f.closeOnly ? 'Kitchen open all day' : 'Open 24 hours') + '</span>'
+            : f.closeOnly ? '<span class="ob-tlabel">Closes</span>' + timeBtn(f.id, d[0], 'close', x.close, 'Kitchen closes', !on)
+            : timeBtn(f.id, d[0], 'open', x.open, 'Opens', !on) + '<span class="ob-tlabel">to</span>' + timeBtn(f.id, d[0], 'close', x.close, 'Closes', !on) + (on && x.open && x.close && mins(x.close) <= mins(x.open) ? '<span class="nextday">next day</span>' : '');
+          return '<div class="ob-day' + (on ? '' : ' off') + '">' +
+            '<label class="ob-check"><input type="checkbox" data-hours="' + f.id + '" data-day="' + d[0] + '" data-act="open"' + (on ? ' checked' : '') + '><span>' + d[1] + '</span></label>' +
+            '<div class="ob-times">' + times + '</div>' +
+            '<label class="ob-check small' + (on ? '' : ' hide') + '"><input type="checkbox" data-hours="' + f.id + '" data-day="' + d[0] + '" data-act="24h"' + (all ? ' checked' : '') + (on ? '' : ' tabindex="-1"') + '><span>24h</span></label>' +
+            '<span class="sr">' + (on ? '' : d[1] + ' closed') + '</span></div>';
         }).join('') + '</div><button type="button" class="ob-link" data-copy-monday="' + f.id + '">Use Monday for every day</button></fieldset>';
       case 'files':
         var list = files[f.id] || [];
@@ -238,8 +255,8 @@
     }
     return '';
   }
-  function timeBtn(field, day, which, val, label) {
-    return '<button type="button" class="ob-time" aria-haspopup="dialog" aria-expanded="false" data-time="' + field + '" data-day="' + day + '" data-which="' + which + '" aria-label="' + label + ', ' + DAY_NAMES[DAYS.map(function (d) { return d[0]; }).indexOf(day)] + ': ' + (val ? fmtTime(val) : 'not set') + '">' + (val ? esc(fmtTime(val)) : 'Choose') + '</button>';
+  function timeBtn(field, day, which, val, label, off) {
+    return '<button type="button" class="ob-time" aria-haspopup="dialog" aria-expanded="false" data-time="' + field + '" data-day="' + day + '" data-which="' + which + '"' + (off ? ' disabled' : '') + ' aria-label="' + label + ', ' + DAY_NAMES[DAYS.map(function (d) { return d[0]; }).indexOf(day)] + ': ' + (val ? fmtTime(val) : 'not set') + '">' + (val ? esc(fmtTime(val)) : 'Choose') + '</button>';
   }
 
   function answerText(f) {
@@ -329,7 +346,15 @@
     var t = e.target;
     if (t.id === 'obHp' || t.type === 'file') return;
     touched = true;
+    if (t.dataset.hours) {
+      delete fromSite[t.dataset.hours];
+      var dd = S[t.dataset.hours][t.dataset.day];
+      if (t.dataset.act === 'open') dd.mode = t.checked ? 'open' : 'closed';
+      else dd.mode = t.checked ? '24h' : 'open';
+      return redrawFocus('[data-hours="' + t.dataset.hours + '"][data-day="' + t.dataset.day + '"][data-act="' + t.dataset.act + '"]');
+    }
     var name = t.name; if (!name) return;
+    delete fromSite[name];
     if (t.type === 'checkbox') {
       var f = findField(name);
       var arr = Array.isArray(S[name]) ? S[name].slice() : [];
@@ -341,8 +366,9 @@
       return redraw(name);
     }
     if (t.type === 'radio') {
-      if (t.dataset.hours) { S[t.dataset.hours][t.dataset.day].mode = t.value; return redraw(t.dataset.hours); }
-      S[name] = t.value; return redraw(name);
+      S[name] = t.value;
+      if (findField(name) && findField(name).kind === 'choice') { openDD = null; draw(false); var btn = box.querySelector('#f_' + name); if (btn) btn.focus(); var o = box.querySelector('#f_' + name + '_other'); if (o && t.value === 'Other') o.focus(); return; }
+      return redraw(name);
     }
     S[name] = t.value;
     status();
@@ -353,6 +379,7 @@
     if (t.type === 'file') addFiles(t.dataset.files, t.files);
   });
   function findField(id) { for (var i = 0; i < SECTIONS.length; i++) for (var j = 0; j < SECTIONS[i].fields.length; j++) if (SECTIONS[i].fields[j].id === id) return SECTIONS[i].fields[j]; return null; }
+  function redrawFocus(sel) { draw(false); var el = box.querySelector(sel); if (el) el.focus({ preventScroll: true }); }
   // A tick can show or hide other questions, so the section is drawn again, keeping focus on what was ticked.
   function redraw(name) {
     var a = document.activeElement; var key = a && a.name ? a.name + '|' + a.value : null;
@@ -365,8 +392,10 @@
   form.addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (!b) return;
     if (b.dataset.time) return !picker.hidden && target === b ? closePicker() : openPicker(b);
+    if (b.dataset.dd) { openDD = openDD === b.dataset.dd ? null : b.dataset.dd; draw(false); var again = box.querySelector('#f_' + b.dataset.dd); if (again) again.focus(); if (openDD) { var first = box.querySelector('[data-f="' + openDD + '"] .dd-list input'); if (first) first.focus(); } return; }
+    if (b.hasAttribute('data-import')) return importSite();
     if (b.dataset.copyMonday) {
-      var h = S[b.dataset.copyMonday]; DAYS.forEach(function (d) { h[d[0]] = JSON.parse(JSON.stringify(h.mon)); }); touched = true; return draw(false);
+      var h = S[b.dataset.copyMonday]; DAYS.forEach(function (d) { h[d[0]] = JSON.parse(JSON.stringify(h.mon)); }); touched = true; delete fromSite[b.dataset.copyMonday]; return draw(false);
     }
     if (b.dataset.removeFile) { files[b.dataset.removeFile].splice(Number(b.dataset.i), 1); return draw(false); }
     if (b.dataset.goto) { cur = Number(b.dataset.goto); return draw(true); }
@@ -379,8 +408,98 @@
     if (sent) return;
     if (!sectionDone(sec)) return showMissing();
     if (sec.review) return send();
-    cur++; draw(true);
+    cur++; saveProgress(); draw(true);
   });
+
+  // ---------- dropdowns ----------
+  function closeDD(focusBtn) {
+    if (!openDD) return;
+    var id = openDD; openDD = null;
+    var wrap = box.querySelector('[data-f="' + id + '"] .dd'); if (!wrap) return;
+    wrap.classList.remove('open'); wrap.querySelector('.dd-list').hidden = true;
+    var btn = wrap.querySelector('.dd-btn'); btn.setAttribute('aria-expanded', 'false'); if (focusBtn) btn.focus();
+  }
+  document.addEventListener('mousedown', function (e) { if (openDD && !e.target.closest('[data-f="' + openDD + '"] .dd')) closeDD(false); });
+  form.addEventListener('focusin', function (e) { if (openDD && !e.target.closest('[data-f="' + openDD + '"] .dd')) closeDD(false); });
+  form.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && openDD) { e.preventDefault(); closeDD(true); return; }
+    if (e.key === 'Enter' && e.target.id === 'f_website') { e.preventDefault(); importSite(); return; }
+    // arrow keys move through a dropdown's choices
+    var list = e.target.closest && e.target.closest('.dd-list');
+    if (list && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+      e.preventDefault(); var ins = Array.prototype.slice.call(list.querySelectorAll('input')); var i = ins.indexOf(e.target);
+      var n = ins[Math.max(0, Math.min(ins.length - 1, i + (e.key === 'ArrowDown' ? 1 : -1)))]; if (n) n.focus();
+    }
+  });
+
+  // ---------- fill in from the restaurant's website ----------
+  // Our server reads the public website and sends back what it found. Only empty answers are filled; each one is
+  // marked "From your website" until the owner changes it, and everything shows again on the review page.
+  var TIME = /^([01]\d|2[0-3]):[0-5]\d$/;
+  var hoursChanged = false;
+  form.addEventListener('input', function (e) { if (e.target.dataset && e.target.dataset.hours === 'hours') hoursChanged = true; }, true);
+  function hoursValid(h) { return h && DAYS.every(function (d) { var x = h[d[0]]; return x && ['open', 'closed', '24h'].indexOf(x.mode) >= 0 && TIME.test(x.open) && TIME.test(x.close); }); }
+  function applyFound(found) {
+    var n = 0;
+    ['restaurant_name', 'restaurant_phone', 'address_street', 'address_city', 'address_region', 'address_postal', 'menu_link'].forEach(function (k) {
+      if (typeof found[k] === 'string' && found[k].trim() && !String(S[k] || '').trim()) { S[k] = k === 'restaurant_phone' ? formatTel(found[k]) : found[k].trim().slice(0, 300); fromSite[k] = true; n++; }
+    });
+    var typeField = findField('restaurant_type');
+    if (Array.isArray(found.restaurant_type) && !(S.restaurant_type || []).length) {
+      var kinds = found.restaurant_type.filter(function (x) { return typeField.options.indexOf(x) >= 0 && x !== 'Other'; });
+      if (kinds.length) { S.restaurant_type = kinds; fromSite.restaurant_type = true; n++; }
+    }
+    if (hoursValid(found.hours) && !hoursChanged) { S.hours = copyHours(found.hours); fromSite.hours = true; n++; }
+    if (typeof found.website === 'string' && found.website) S.website = found.website;
+    touched = true;
+    return n;
+  }
+  function importSite() {
+    var url = String(S.website || '').trim();
+    if (!url) { importNote = { kind: 'bad', text: 'Type your website address first.' }; return redrawFocus('#f_website'); }
+    if (!urlOk(url)) { importNote = { kind: 'bad', text: 'That doesn\'t look like a web address. Try something like yourrestaurant.com.' }; return redrawFocus('#f_website'); }
+    importing = true; importNote = null; draw(false);
+    fetch(API + '/lookup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: url }) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || 'We couldn\'t read that website.'); return j; }); })
+      .then(function (j) {
+        if (!j.ok) { importNote = { kind: 'bad', text: j.error || 'We couldn\'t read that website. You can fill the form in yourself.' }; return; }
+        var n = applyFound(j.found || {});
+        importNote = n ? { kind: 'good', text: 'We filled in ' + n + ' answer' + (n === 1 ? '' : 's') + ' from your website. They\'re marked "From your website" so you can check them.' }
+          : { kind: 'bad', text: 'We read your website but couldn\'t find details to fill in. You can type them in below.' };
+      })
+      .catch(function (err) { importNote = { kind: 'bad', text: (err && err.message && !/fetch|network/i.test(err.message) ? err.message : 'We couldn\'t reach our server.') + ' You can fill the form in yourself.' }; })
+      .then(function () { importing = false; draw(false); var b = box.querySelector('[data-import]'); if (b) b.focus(); });
+  }
+
+  // ---------- keeping finished sections for 2 days ----------
+  // Only whole sections are kept (each time Next is pressed), in this browser on this device. After 2 days from the
+  // start, or once the form is sent, they are deleted. Uploaded files are not kept.
+  var KEY = 'foh_onboarding'; var KEEP_MS = 2 * 24 * 60 * 60 * 1000;
+  function loadProgress() { try { var x = JSON.parse(localStorage.getItem(KEY) || 'null'); if (x && Date.now() - x.started < KEEP_MS) return x; localStorage.removeItem(KEY); } catch (e) { /* storage blocked: nothing kept */ } return null; }
+  function clearProgress() { try { localStorage.removeItem(KEY); } catch (e) { /* fine */ } }
+  function saveProgress() {
+    var keep = {};
+    visibleSections().slice(0, cur).forEach(function (sec) { visibleFields(sec).forEach(function (f) {
+      if (!f.id || f.kind === 'files') return;
+      if (S[f.id] !== undefined) keep[f.id] = S[f.id];
+      if (S[f.id + '_other']) keep[f.id + '_other'] = S[f.id + '_other'];
+    }); });
+    var old = loadProgress();
+    var hadFiles = Object.keys(files).some(function (k) { return files[k].length; });
+    try { localStorage.setItem(KEY, JSON.stringify({ started: old ? old.started : Date.now(), cur: cur, S: keep, fromSite: fromSite, hadFiles: Boolean(old && old.hadFiles) || hadFiles })); } catch (e) { /* not kept */ }
+  }
+  var resumeEl = $('obResume');
+  (function resume() {
+    var x = loadProgress(); if (!x || !x.cur) return;
+    Object.keys(x.S || {}).forEach(function (k) { S[k] = x.S[k]; });
+    fromSite = x.fromSite || {};
+    cur = Math.min(x.cur, visibleSections().length - 1);
+    var until = new Date(x.started + KEEP_MS);
+    resumeEl.innerHTML = '<span>Welcome back. We kept the sections you finished until ' + esc(until.toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })) + ' at ' + esc(until.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })) + '.' + (x.hadFiles ? ' Please add your uploaded files again.' : '') + '</span><button type="button" class="ob-link" id="obRestart">Start over</button>';
+    resumeEl.hidden = false;
+    $('obRestart').addEventListener('click', function () { clearProgress(); touched = false; location.reload(); });
+  })();
+
 
   // ---------- files ----------
   // All files together must stay under 12 MB (what our server takes in one form).
@@ -485,7 +604,7 @@
   $('tpDone').addEventListener('click', function () {
     var h = Number(HOURS[wheelIndex(wheels.h)]) % 12 + (wheelIndex(wheels.a) === 1 ? 12 : 0);
     var val = String(h).padStart(2, '0') + ':' + MINS[wheelIndex(wheels.m)];
-    var b = target; touched = true;
+    var b = target; touched = true; delete fromSite[b.dataset.time];
     if (b.dataset.day) S[b.dataset.time][b.dataset.day][b.dataset.which] = val; else S[b.dataset.time] = val;
     var key = b.dataset.time + '|' + (b.dataset.day || '') + '|' + (b.dataset.which || '');
     hidePicker();
@@ -509,7 +628,7 @@
     fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fields: raw, answers: answers(), files: upload, company_fax: $('obHp').value }) })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || 'The form could not be sent (' + r.status + ').'); return j; }); })
       .then(function () {
-        touched = false;
+        touched = false; clearProgress(); resumeEl.hidden = true;
         form.hidden = true; $('obGauge').hidden = true; document.querySelector('.ob-h').hidden = true;
         $('obDoneText').textContent = 'We\'ll be in touch at ' + String(S.contact_email || '').trim() + ' to set up your receptionist.';
         $('obDone').hidden = false; $('obDone').focus();

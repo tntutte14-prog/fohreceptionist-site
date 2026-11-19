@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="style.css">
 <script src="tune.js"></script>
 </head>
-<body>
+<body class="home">
 
 <header class="site">
   <div class="wrap bar">
@@ -36,10 +36,9 @@
   <div>
     <div class="eyebrow">AI phone receptionist for restaurants</div>
     <h1>A receptionist that works <em>your way.</em></h1>
-    <p class="lede">Custom voice, custom rules, your own login, and a team that stays close. Call the demo and hear it for yourself.</p>
+    <p class="lede">Custom voice, custom rules, your own login, and a team that stays close. Call the demo on the phone and hear it for yourself.</p>
     <div class="actions">
       <a class="btn" href="onboarding.html">Get started</a>
-      <button class="btn ghost" type="button" data-open-call="Maple and Ember Bistro">Call the demo</button>
     </div>
     <p class="kinds">Pizza, Italian, Chinese, sushi and more: <b>it learns your menu and your rules.</b></p>
   </div>
@@ -60,7 +59,7 @@
           <div class="rec-title">Recents</div>
           <div class="seg" aria-hidden="true"><span class="on">All</span><span>Missed</span></div>
           <ul class="calls" id="calls" aria-label="Recent calls"></ul>
-          <div class="call-cta"><button class="btn" type="button" data-open-call="Maple and Ember Bistro">Call the demo</button></div>
+          <div class="call-cta"><a class="btn" id="callDemo" href="tel:+17786525367">Call the demo</a></div>
           <div class="tabbar" aria-hidden="true">
             <span><svg viewBox="0 0 24 24"><path d="m12 2.5 2.9 6 6.6.7-5 4.5 1.4 6.5L12 17l-5.9 3.2 1.4-6.5-5-4.5 6.6-.7z"/></svg>Favourites</span>
             <span class="on"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 10.6V6h-2v7.4l5.1 3.1 1-1.7z"/></svg>Recents</span>
