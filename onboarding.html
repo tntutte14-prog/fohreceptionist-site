@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Get started | FOH AI</title>
+<meta name="description" content="Set up FOH AI for your restaurant. Most answers are a tap.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta name="theme-color" content="#f6f5f1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="onboarding.css">
+<script src="tune.js"></script>
+</head>
+<body class="ob">
+
+<header class="ob-head"><a class="logo" href="/"><img src="logo-blue.png" alt="FOH AI home" width="84" height="70"></a></header>
+
+<main class="ob-main">
+  <div class="ob-card">
+    <h1 class="ob-h">Get started</h1>
+
+    <div class="ob-gauge" id="obGauge" role="progressbar" aria-label="Form completed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <svg viewBox="0 0 240 172" aria-hidden="true">
+        <path class="track" d="M26 159 A100 100 0 1 1 214 159" pathLength="100"/>
+        <path class="fill" id="obFill" d="M26 159 A100 100 0 1 1 214 159" pathLength="100" stroke-dasharray="0 100"/>
+      </svg>
+      <div class="ob-gauge-num"><b id="obPct">0%</b><span>complete</span></div>
+    </div>
+
+    <form id="obForm" novalidate autocomplete="on">
+      <p class="ob-step" id="obStep">Section 1 of 8</p>
+      <div id="obSection" class="ob-section" aria-live="polite"></div>
+      <!-- people never see or fill this; bots do -->
+      <div class="ob-hp" aria-hidden="true"><label>Leave this empty <input type="text" name="company_fax" id="obHp" tabindex="-1" autocomplete="off"></label></div>
+      <p class="ob-missing" id="obMissing" role="alert" hidden></p>
+      <div class="ob-nav">
+        <button class="ob-navbtn" type="button" id="obBack"><span aria-hidden="true">‹</span> Back</button>
+        <button class="ob-navbtn next" type="submit" id="obNext">Next <span aria-hidden="true">›</span></button>
+      </div>
+    </form>
+
+    <div class="ob-done" id="obDone" hidden tabindex="-1">
+      <h2>Thanks, we've got it.</h2>
+      <p id="obDoneText">We'll be in touch soon to set up your receptionist.</p>
+      <a class="ob-navbtn next" href="/">Back to home <span aria-hidden="true">›</span></a>
+    </div>
+  </div>
+</main>
+
+<div class="tp" id="timePicker" role="dialog" aria-labelledby="tpTitle" hidden>
+  <div class="tp-head" id="tpTitle">Choose time</div>
+  <div class="tp-wheels">
+    <div class="tp-band" aria-hidden="true"></div>
+    <div class="wheel" id="wHour" role="listbox" aria-label="Hour" tabindex="0"></div>
+    <div class="wheel" id="wMin" role="listbox" aria-label="Minutes" tabindex="0"></div>
+    <div class="wheel" id="wAp" role="listbox" aria-label="AM or PM" tabindex="0"></div>
+  </div>
+  <div class="tp-foot"><button type="button" id="tpCancel">Cancel</button><button type="button" id="tpDone" class="go">Done</button></div>
+</div>
+
+<script src="onboarding.js"></script>
+</body>
+</html>
