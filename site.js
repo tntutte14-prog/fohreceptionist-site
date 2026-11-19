@@ -8,3 +8,11 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && nav.classList.contains('open')) { set(false); btn.focus(); } });
   nav.addEventListener('click', function (e) { if (e.target.closest('a')) set(false); });
 })();
+
+// The header gets a light background once the page scrolls, so it stays readable over every section.
+(function () {
+  'use strict';
+  var hd = document.querySelector('.hd'); if (!hd) return;
+  function set() { hd.classList.toggle('stuck', window.scrollY > 40); }
+  set(); window.addEventListener('scroll', set, { passive: true });
+})();
