@@ -50,3 +50,43 @@
   addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
   frame();
 })();
+
+/* ---- v7 extras: word reveals, scroll story, voices, progress bar, cursor glow ---- */
+(function () {
+  var root = document.documentElement;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // voices: choose one (works with or without motion)
+  document.querySelectorAll('.orb button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.orb button').forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+    });
+  });
+  // story: without motion, show every step lit
+  var steps = document.querySelectorAll('.story-steps li');
+  var sp = document.querySelector('.sp');
+  if (reduce || !('IntersectionObserver' in window)) { document.body.classList.add('no-js-steps'); steps.forEach(function (li) { li.classList.add('on'); }); return; }
+  var sio = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      steps.forEach(function (li) { li.classList.toggle('on', li === e.target); });
+      if (sp) sp.setAttribute('data-step', e.target.getAttribute('data-s'));
+    });
+  }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+  steps.forEach(function (li) { sio.observe(li); });
+  // headlines: words slide up
+  document.querySelectorAll('.hero-c h1, .story-head h2, .voices-head h2, .feat-head h2, .end2 h2').forEach(function (h, n) {
+    var txt = h.textContent.trim().split(/\s+/); h.setAttribute('aria-label', h.textContent.trim());
+    h.innerHTML = txt.map(function (w, i) { return '<span class="w" aria-hidden="true" style="--wi:' + i + '"><span>' + w + '</span></span>'; }).join(' ');
+    if (h.closest('.hero-c')) { setTimeout(function () { h.classList.add('words-in'); }, 150); return; }
+    var wio = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { h.classList.add('words-in'); wio.disconnect(); } }); }, { threshold: .4 });
+    wio.observe(h);
+  });
+  // progress bar + cursor glow
+  var bar = document.createElement('div'); bar.id = 'progress'; document.body.appendChild(bar);
+  var hero = document.querySelector('.hero2');
+  if (hero) {
+    hero.addEventListener('pointermove', function (e) { var r = hero.getBoundingClientRect(); hero.style.setProperty('--mx', (e.clientX - r.left) + 'px'); hero.style.setProperty('--my', (e.clientY - r.top) + 'px'); hero.style.setProperty('--mo', 1); });
+    hero.addEventListener('pointerleave', function () { hero.style.setProperty('--mo', 0); });
+  }
+})();
+(function(){var b=document.body;function s(){b.classList.toggle('scrolled',window.scrollY>24)}s();addEventListener('scroll',s,{passive:true});})();
