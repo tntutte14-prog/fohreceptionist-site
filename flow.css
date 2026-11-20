@@ -34,7 +34,7 @@ body.home .hero2{padding:clamp(36px,5vw,72px) 0 0;position:relative}
 .hero-actions .h-link{margin-top:18px}
 
 .showcase{position:relative;height:clamp(520px,58vw,740px);margin-top:clamp(20px,3vw,40px);padding-top:50px;box-sizing:border-box;overflow:hidden;
-  -webkit-mask-image:linear-gradient(#000 62%,transparent 100%);mask-image:linear-gradient(#000 62%,transparent 100%)}
+  -webkit-mask-image:linear-gradient(#000 80%,transparent 100%);mask-image:linear-gradient(#000 80%,transparent 100%)}
 .showcase::before{content:"";position:absolute;left:50%;top:6%;width:min(760px,92%);aspect-ratio:1;transform:translateX(-50%);border-radius:50%;
   background:radial-gradient(circle at 50% 45%, rgb(226 104 60 / .38), rgb(26 124 199 / .26) 45%, transparent 70%);filter:blur(40px)}
 .showcase .phone{position:absolute;left:50%;top:64px;width:min(330px,56vw);z-index:2;
@@ -211,3 +211,34 @@ body.home .ft2 .ft-in{border-top:0}
   body.home::before{transform:none}
   .showcase .phone{transform:translate3d(calc(-50% - min(130px,11vw)),0,0) rotate(-7deg)}
 }
+
+/* ---------- left phone: a real call screen, light like the reference ---------- */
+.showcase .phone{background:linear-gradient(145deg,#e9eef4,#c4ccd6);box-shadow:0 0 0 1.5px #fff inset,0 40px 80px -30px rgb(11 37 64 / .45),0 0 0 1px rgb(14 26 43 / .08)}
+.showcase .phone .screen{background:#faf8f4;color:var(--ink2)}
+.showcase .phone .status .clock{color:var(--ink2)}
+.showcase .phone .status svg{fill:var(--ink2);color:var(--ink2)}
+.showcase .calling{background:radial-gradient(90% 55% at 50% 38%,rgb(61 220 132 / .2),transparent 70%),radial-gradient(80% 40% at 50% 0%,rgb(26 124 199 / .16),transparent 70%),#faf8f4;padding-top:52px}
+.rp-title{font:400 28px/1 var(--f-head);color:var(--ink2);align-self:flex-start;margin-left:14px;margin-top:6px}
+.showcase .calling .demo-pill{display:none}
+.showcase .calling .who{font:600 24px/1.15 var(--f-body);color:var(--ink2);margin-top:44px}
+.showcase .calling .line{color:rgb(14 26 43 / .6)}
+.showcase .calling .num{color:var(--ink2);font-size:18px}
+.showcase .calling .hint{color:rgb(14 26 43 / .55)}
+.showcase .calling .btns{margin-top:auto;margin-bottom:34px;justify-content:center;width:100%}
+.showcase #callBack{display:none}
+.showcase #callGo{transform:scale(1.25)}
+.showcase #callGo .c{box-shadow:0 0 0 10px rgb(61 220 132 / .18),0 16px 30px -10px rgb(22 163 74 / .6)}
+@media (prefers-reduced-motion:no-preference){.showcase #callGo .c{animation:ringpulse 2.2s ease-out infinite}}
+@keyframes ringpulse{0%{box-shadow:0 0 0 0 rgb(61 220 132 / .45),0 16px 30px -10px rgb(22 163 74 / .6)}100%{box-shadow:0 0 0 26px rgb(61 220 132 / 0),0 16px 30px -10px rgb(22 163 74 / .6)}}
+
+/* ---------- what you get: short and large ---------- */
+.feat-head{display:block;margin-bottom:clamp(36px,5vw,64px);text-align:center}
+.feat-head .mono-label{justify-content:center}
+body.home .feat-head h2{max-width:none;font-size:clamp(44px,6vw,84px);margin:0}
+.cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,3vw,48px);text-align:center}
+.cards4 .icard h3{font-size:clamp(26px,2.4vw,32px)}
+.cards4 .icard p{font-size:18px;max-width:22ch}
+.feat-more{margin:clamp(40px,5vw,64px) auto 0;text-align:center;font-size:19px;line-height:1.6;color:var(--t-soft);max-width:60ch}
+.feat-more b{color:var(--t-full);font-weight:600}
+@media (max-width:1100px){.cards4{grid-template-columns:1fr 1fr;gap:48px 24px}}
+@media (max-width:560px){.cards4{grid-template-columns:1fr}}

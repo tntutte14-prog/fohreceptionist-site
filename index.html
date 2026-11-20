@@ -28,9 +28,6 @@
     <a class="logo" href="/"><img src="logo-blue.png" alt="FOH AI" width="84" height="70"></a>
     <nav class="hd-nav" id="siteNav" aria-label="Main">
       <a href="#features">What you get</a>
-      <a href="#how">How it works</a>
-      <a href="#voice">Voice</a>
-      <a href="#login">Your login</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
     </nav>
@@ -49,7 +46,7 @@
     <div class="hero-actions">
       <a class="demo-card" data-demo-call href="tel:+17786525367">
         <span class="demo-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg></span>
-        <span class="demo-txt"><b>Hear it answer a call</b><small>Call our demo restaurant. It takes a minute.</small></span>
+        <span class="demo-txt"><b>Hear it answer your call</b><small>Tap and our receptionist picks up.</small></span>
         <span class="demo-arw" aria-hidden="true">→</span>
       </a>
       <a class="h-link" href="onboarding.html">Or get your restaurant set up <span aria-hidden="true">→</span></a>
@@ -70,7 +67,7 @@
               <svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#fff" stroke-opacity=".5"/><rect x="2" y="2" width="16" height="8" rx="1.6"/><rect x="24" y="4" width="2" height="4" rx="1" fill-opacity=".5"/></svg>
             </span>
           </div>
-          <div class="view recents" id="viewRecents">
+          <div class="view recents" id="viewRecents" hidden>
             <div class="rec-top"><span class="edit" aria-hidden="true">Edit</span><span class="demo-pill">Demo</span></div>
             <div class="rec-title">Recents</div>
             <div class="seg" aria-hidden="true"><span class="on">All</span><span>Missed</span></div>
@@ -84,7 +81,8 @@
               <span><svg viewBox="0 0 24 24"><path d="M6.5 7a5 5 0 0 0-1.2 9.8h13.4A5 5 0 1 0 14 10a5 5 0 0 0 1 3h-6a5 5 0 0 0-2.5-6zm0 2.2a2.8 2.8 0 1 1 0 5.6 2.8 2.8 0 0 1 0-5.6zm11 0a2.8 2.8 0 1 1 0 5.6 2.8 2.8 0 0 1 0-5.6z"/></svg>Voicemail</span>
             </div>
           </div>
-          <div class="view calling" id="viewCall" hidden>
+          <div class="view calling" id="viewCall">
+            <span class="rp-title">Restaurant phone</span>
             <span class="demo-pill">Demo</span>
             <div class="who" id="callWho">Maple and Ember Bistro</div>
             <div class="line">FOH AI receptionist</div>
@@ -112,185 +110,20 @@
   </div>
 </section>
 
-<!-- what a missed call costs -->
-<section class="panel cost" id="savings">
-  <div class="in cost-grid">
-    <div class="cost-left">
-      <p class="mono-label ember">What the phone costs you</p>
-      <h2>A missed call doesn't ring twice.</h2>
-      <p class="soft">When nobody can get to the phone, the guest calls the next place on the list. We answer, so that booking stays yours.</p>
-      <div class="tickets">
-        <div class="ticket bad"><span class="t-ico" aria-hidden="true">✕</span><span><small>Without FOH AI · Friday 7:42 PM</small><b>The phone rings out during the rush.</b><em>The guest books somewhere else.</em></span></div>
-        <div class="ticket good"><span class="t-ico" aria-hidden="true">✓</span><span><small>With FOH AI · Friday 7:42 PM</small><b>Answered. Table for four booked.</b><em>Booked while the guest was on the line.</em></span></div>
-      </div>
-    </div>
-    <ol class="outcomes">
-      <li><span class="n">01</span><div><h3>Tables you keep</h3><p>A guest who can't get through books somewhere else. Every call gets answered, so the reservation stays with you.</p></div></li>
-      <li><span class="n">02</span><div><h3>Your staff back on the floor</h3><p>No more running from the host stand to the phone. Your team stays with the guests in the room.</p></div></li>
-      <li><span class="n">03</span><div><h3>No busy signal on a busy night</h3><p>We take several calls at the same time, so a full Friday doesn't mean missed calls.</p></div></li>
-      <li><span class="n">04</span><div><h3>Answered before open and after close</h3><p>Guests asking about hours, the menu or a booking get an answer whenever they call.</p></div></li>
-    </ol>
-  </div>
-</section>
-
-<!-- a live call turns into a booking -->
-<section class="panel callflow" id="booking">
-  <div class="in">
-    <div class="cf-head">
-      <div><p class="mono-label">From the call to the table</p><h2>The booking is made before they hang up.</h2></div>
-      <p class="soft">A guest asks for a table. We take the name, the party size and the time, and the booking is in your login while they're still on the line.</p>
-    </div>
-    <div class="cf-stage">
-      <div class="livecall" aria-label="Example of a live call">
-        <div class="lc-top"><span class="rec"><i></i>Live call 0:52</span><span>Friday evening</span></div>
-        <div class="lc-wave" aria-hidden="true"><i style="--h:96%"></i><i style="--h:44%"></i><i style="--h:70%"></i><i style="--h:18%"></i><i style="--h:30%"></i><i style="--h:36%"></i><i style="--h:30%"></i><i style="--h:96%"></i><i style="--h:24%"></i><i style="--h:18%"></i><i style="--h:36%"></i><i style="--h:62%"></i><i style="--h:18%"></i><i style="--h:30%"></i><i style="--h:70%"></i><i style="--h:70%"></i><i style="--h:30%"></i><i style="--h:62%"></i><i style="--h:30%"></i><i style="--h:36%"></i><i style="--h:70%"></i><i style="--h:18%"></i><i style="--h:24%"></i><i style="--h:30%"></i><i style="--h:62%"></i><i style="--h:24%"></i><i style="--h:18%"></i><i style="--h:24%"></i><i style="--h:24%"></i><i style="--h:70%"></i><i style="--h:18%"></i><i style="--h:62%"></i><i style="--h:18%"></i><i style="--h:36%"></i><i style="--h:44%"></i><i style="--h:80%"></i><i style="--h:70%"></i><i style="--h:44%"></i><i style="--h:36%"></i><i style="--h:30%"></i><i style="--h:24%"></i><i style="--h:80%"></i><i style="--h:36%"></i><i style="--h:44%"></i></div>
-        <div class="lc-lines">
-          <div><small>Guest</small><span>Hi, do you have a table for four tonight, around 7:30?</span></div>
-          <div class="a"><small>Receptionist</small><span>We do. Can I get a name for the booking?</span></div>
-          <div><small>Guest</small><span>It's Sam.</span></div>
-          <div class="a"><small>Receptionist</small><span>You're booked for four at 7:30 tonight, Sam. See you then.</span></div>
-        </div>
-      </div>
-      <div class="cf-link" aria-hidden="true"><svg viewBox="0 0 100 64" fill="none"><path d="M3 50C40 50 56 14 96 14" stroke="#1a7cc7" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/><circle cx="4" cy="50" r="4" fill="#1a7cc7"/><circle cx="96" cy="14" r="4" fill="#1a7cc7"/></svg></div>
-      <div class="slip" aria-label="Example of the booking in your login">
-        <b class="sl-name">Your restaurant</b>
-        <p class="sl-meta">Reservation · Friday · 7:30 PM</p>
-        <dl>
-          <div><dt>Name</dt><dd>Sam</dd></div>
-          <div><dt>Party</dt><dd>4 people</dd></div>
-          <div><dt>Time</dt><dd>7:30 PM</dd></div>
-          <div><dt>Taken</dt><dd>By phone</dd></div>
-        </dl>
-        <p class="sl-foot"><span>Status</span><b>Booked</b></p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- features: what it does today -->
+<!-- what you get -->
 <section class="panel feat" id="features">
   <div class="in">
     <div class="feat-head">
-      <div><p class="mono-label">What you get</p><h2>Everything it handles, from day one.</h2></div>
-      <p class="soft">More is on the way, and you can ask for changes any time.</p>
+      <p class="mono-label">What you get</p>
+      <h2>Your phone, covered.</h2>
     </div>
-    <div class="cards3">
-      <article class="icard"><div class="ill"><svg viewBox="0 0 320 170" fill="none" stroke="#1566a6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="40" y="22" width="240" height="36" rx="10" fill="#fff"/><circle cx="62" cy="40" r="5" fill="#3ddc84" stroke="none"/><path d="M80 40h74"/><path d="M214 34v12M224 30v20M234 36v8M244 32v16M254 37v6" stroke="#1a7cc7"/><rect x="40" y="66" width="240" height="36" rx="10" fill="#fff"/><circle cx="62" cy="84" r="5" fill="#3ddc84" stroke="none"/><path d="M80 84h56"/><path d="M214 78v12M224 74v20M234 80v8M244 76v16M254 81v6" stroke="#1a7cc7"/><rect x="40" y="110" width="240" height="36" rx="10" fill="#fff"/><circle cx="62" cy="128" r="5" fill="#3ddc84" stroke="none"/><path d="M80 128h88"/><path d="M214 122v12M224 118v20M234 124v8M244 120v16M254 125v6" stroke="#1a7cc7"/></svg></div><h3>Several calls at the same time</h3><p>No busy signal and no hold music. Every line gets picked up.</p></article>
-      <article class="icard"><div class="ill"><svg viewBox="0 0 320 170" fill="none" stroke="#1566a6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M48 30h132a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12h-92l-24 20V94h-16a12 12 0 0 1-12-12V42a12 12 0 0 1 12-12z" fill="#fff"/><path d="M68 52h92M68 68h60"/><path d="M272 82a12 12 0 0 0-12-12h-92a12 12 0 0 0-12 12v36a12 12 0 0 0 12 12h72l28 20v-20a12 12 0 0 0 12-12z" fill="#1a7cc7" transform="translate(-20 4)"/><path d="M168 98h76M168 114h48" stroke="#fff" transform="translate(-20 4)"/></svg></div><h3>Menu, hours and guest questions</h3><p>Guests get answers about your menu, hours and location without pulling your staff off the floor.</p></article>
-      <article class="icard"><div class="ill"><svg viewBox="0 0 320 170" fill="none" stroke="#1566a6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="46" y="30" width="62" height="110" rx="14" fill="#fff"/><path d="M68 44h18"/><circle cx="77" cy="122" r="5"/><path d="M122 85h86" stroke="#1a7cc7" stroke-dasharray="2 7"/><path d="M198 74l12 11-12 11" stroke="#1a7cc7"/><circle cx="256" cy="66" r="20" fill="#fff"/><path d="M218 140c0-24 17-38 38-38s38 14 38 38z" fill="#cfe4f7"/></svg></div><h3>Handed to your staff when it should be</h3><p>When a guest needs a person, the call is transferred to your staff.</p></article>
+    <div class="cards4">
+      <article class="icard"><div class="ill"><svg viewBox="0 0 320 170" fill="none" stroke="#1566a6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="40" y="22" width="240" height="36" rx="10" fill="#fff"/><circle cx="62" cy="40" r="5" fill="#3ddc84" stroke="none"/><path d="M80 40h74"/><path d="M214 34v12M224 30v20M234 36v8M244 32v16M254 37v6" stroke="#1a7cc7"/><rect x="40" y="66" width="240" height="36" rx="10" fill="#fff"/><circle cx="62" cy="84" r="5" fill="#3ddc84" stroke="none"/><path d="M80 84h56"/><path d="M214 78v12M224 74v20M234 80v8M244 76v16M254 81v6" stroke="#1a7cc7"/><rect x="40" y="110" width="240" height="36" rx="10" fill="#fff"/><circle cx="62" cy="128" r="5" fill="#3ddc84" stroke="none"/><path d="M80 128h88"/><path d="M214 122v12M224 118v20M234 124v8M244 120v16M254 125v6" stroke="#1a7cc7"/></svg></div><h3>Calls answered</h3><p>Several at once. No busy signal.</p></article>
+      <article class="icard"><div class="ill"><svg viewBox="0 0 320 170" fill="none" stroke="#1566a6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="70" y="26" width="180" height="124" rx="16" fill="#fff"/><path d="M70 62h180"/><path d="M110 16v22M210 16v22"/><path d="M98 88h28M146 88h28M194 88h28M98 116h28M146 116h28"/><rect x="190" y="104" width="38" height="26" rx="8" fill="#1a7cc7" stroke="none"/><path d="M200 117l6 6 11-12" stroke="#fff"/></svg></div><h3>Tables booked</h3><p>Reservations made while the guest is still on the line.</p></article>
+      <article class="icard"><div class="ill"><svg viewBox="0 0 320 170" fill="none" stroke="#1566a6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M48 30h132a12 12 0 0 1 12 12v40a12 12 0 0 1-12 12h-92l-24 20V94h-16a12 12 0 0 1-12-12V42a12 12 0 0 1 12-12z" fill="#fff"/><path d="M68 52h92M68 68h60"/><path d="M272 82a12 12 0 0 0-12-12h-92a12 12 0 0 0-12 12v36a12 12 0 0 0 12 12h72l28 20v-20a12 12 0 0 0 12-12z" fill="#1a7cc7" transform="translate(-20 4)"/><path d="M168 98h76M168 114h48" stroke="#fff" transform="translate(-20 4)"/></svg></div><h3>Questions answered</h3><p>Menu, hours and location.</p></article>
+      <article class="icard"><div class="ill"><svg viewBox="0 0 320 170" fill="none" stroke="#1566a6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="46" y="30" width="62" height="110" rx="14" fill="#fff"/><path d="M68 44h18"/><circle cx="77" cy="122" r="5"/><path d="M122 85h86" stroke="#1a7cc7" stroke-dasharray="2 7"/><path d="M198 74l12 11-12 11" stroke="#1a7cc7"/><circle cx="256" cy="66" r="20" fill="#fff"/><path d="M218 140c0-24 17-38 38-38s38 14 38 38z" fill="#cfe4f7"/></svg></div><h3>Staff when needed</h3><p>Calls it can't handle go to your team.</p></article>
     </div>
-    <div class="feat-cols">
-      <div><h3>On the phone</h3><ul class="chk">
-        <li>Reservations, booked while the guest is on the line</li>
-        <li>Hours and location</li>
-        <li>Questions about your menu</li>
-        <li>General guest questions</li>
-        <li>Transfers to your staff when it can't answer safely</li>
-        <li>Several calls at the same time</li></ul></div>
-      <div><h3>Set up your way</h3><ul class="chk">
-        <li>Choose from our voices</li>
-        <li>Voice cloning, with the speaker's permission</li>
-        <li>Your greeting, pace and tone</li>
-        <li>Custom rules for how you run things</li>
-        <li>Keep your number. Guests call the one they know</li></ul></div>
-      <div><h3>In your login</h3><ul class="chk">
-        <li>Every call, ready to review</li>
-        <li>The reservations it made</li>
-        <li>Your usage</li>
-        <li>Change hours, rules and greeting any time, or ask us to</li></ul></div>
-      <div><h3 class="next-h">Coming next</h3><ul class="chk next">
-        <li>Takeout orders</li>
-        <li>Delivery orders</li>
-        <li>Dietary restriction questions</li>
-        <li>Takeout and delivery in your login</li></ul></div>
-    </div>
-  </div>
-</section>
-
-<!-- how it works -->
-<section class="panel how" id="how">
-  <div class="in">
-    <div class="how-head">
-      <div><p class="mono-label">How it works</p><h2>Your calls answered in three steps.</h2></div>
-      <a class="b-blue" href="onboarding.html">Get started <span class="arw" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-    </div>
-    <ol class="steps">
-      <li><span class="dot">1</span><h3>Tell us about your restaurant</h3><p>Fill in our form online. It takes about 15 to 20 minutes, and most answers are a tap.</p></li>
-      <li><span class="dot">2</span><h3>We set it up with you</h3><p>We build it around your hours, menu and rules, then test it with you before it goes live.</p></li>
-      <li><span class="dot on">3</span><h3>Your calls get answered</h3><p>Guests keep calling the number they know. You see every call in your login.</p></li>
-    </ol>
-  </div>
-</section>
-
-<!-- voice -->
-<section class="panel voice-sec" id="voice">
-  <div class="in voice-grid">
-    <div>
-      <p class="mono-label sky">Voice</p>
-      <h2>It sounds like <em>your restaurant.</em></h2>
-      <p class="soft">Pick from our voices, or have one cloned with the speaker's permission. Set the greeting, the pace and the way it talks to guests, so it fits your room.</p>
-    </div>
-    <div class="picker">
-      <div class="pk-head"><b>Choose a voice</b><small>Greeting: “Thanks for calling. How can I help?”</small></div>
-      <ul>
-        <li class="on"><span class="play" aria-hidden="true"></span><span><b>Warm and relaxed</b><small>Our voice</small></span><span class="wave" aria-hidden="true"></span><span class="sel" aria-label="Selected">✓</span></li>
-        <li><span class="play" aria-hidden="true"></span><span><b>Polished and calm</b><small>Our voice</small></span><span class="wave" aria-hidden="true"></span></li>
-        <li><span class="play" aria-hidden="true"></span><span><b>Your own voice</b><small>Cloned, with permission</small></span><span class="wave" aria-hidden="true"></span></li>
-      </ul>
-      <p class="pk-foot">+ Custom rules for how you run things</p>
-    </div>
-  </div>
-</section>
-
-<!-- your login -->
-<section class="panel login-sec" id="login">
-  <div class="in login-grid">
-    <div class="login-copy">
-      <p class="mono-label">Your login</p>
-      <h2>See every call it took for you.</h2>
-      <p class="soft">Your own login shows every call, the reservations it made and your usage. Change your hours, rules and greeting whenever you like.</p>
-      <dl class="facts">
-        <div><dt>Every call</dt><dd>Read what was said</dd></div>
-        <div><dt>Reservations made</dt><dd>Name, party size and time</dd></div>
-        <div><dt>Your settings</dt><dd>Hours, rules and greeting</dd></div>
-      </dl>
-    </div>
-    <div class="browser" aria-hidden="true">
-      <div class="br-bar"><i></i><i></i><i></i><span>Your FOH AI login</span></div>
-      <div class="br-body">
-        <aside><b>Maple and Ember</b><span class="on">Calls</span><span>Reservations</span><span>Usage</span><span>Settings</span></aside>
-        <div class="br-main">
-          <div class="br-title"><b>Calls</b><small>Today</small></div>
-          <div class="br-table">
-            <div class="th"><span>Caller</span><span>Reason</span><span>Time</span><span>Result</span></div>
-            <div><span>(604) 555-01••</span><span>Reservation</span><span>7:52 PM</span><span><em class="g">Booked</em></span></div>
-            <div><span>(778) 555-01••</span><span>Hours</span><span>7:41 PM</span><span><em>Answered</em></span></div>
-            <div><span>(604) 555-02••</span><span>Menu question</span><span>7:30 PM</span><span><em>Answered</em></span></div>
-            <div><span>(236) 555-01••</span><span>Large party</span><span>7:19 PM</span><span><em class="o">Sent to staff</em></span></div>
-            <div><span>(604) 555-03••</span><span>Reservation</span><span>7:08 PM</span><span><em class="g">Booked</em></span></div>
-            <div><span>(778) 555-02••</span><span>General question</span><span>6:57 PM</span><span><em>Answered</em></span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- support -->
-<section class="panel support">
-  <div class="in support-grid">
-    <div>
-      <p class="mono-label light">Support</p>
-      <h2>We stay close.</h2>
-      <p>We keep a close connection with every restaurant we work with.</p>
-      <a class="b-white" href="onboarding.html">Get started <span aria-hidden="true">→</span></a>
-    </div>
-    <ul class="sup-tiles">
-      <li><b>Fast support</b><span>Ask and we answer quickly.</span></li>
-      <li><b>Custom changes</b><span>Need something different? We build it.</span></li>
-      <li><b>Monthly check-ins</b><span>We go over how it's doing, together.</span></li>
-      <li><b>Easy onboarding</b><span>We set it up with you.</span></li>
-    </ul>
+    <p class="feat-more"><b>In your login:</b> every call, every reservation, your usage. <b>Coming next:</b> takeout and delivery orders.</p>
   </div>
 </section>
 
@@ -310,7 +143,7 @@
 <footer class="ft2">
   <div class="in ft-in">
     <div class="ft-brand"><img src="logo-blue.png" alt="FOH AI" width="84" height="70"><p>Phone answering for restaurants.<br>Langley, BC</p></div>
-    <nav class="ft-col" aria-label="Product"><b>Product</b><a href="#features">What you get</a><a href="#how">How it works</a><a href="#voice">Voice</a><a href="#login">Your login</a><a href="onboarding.html">Get started</a></nav>
+    <nav class="ft-col" aria-label="Product"><b>Product</b><a href="#features">What you get</a><a href="onboarding.html">Get started</a></nav>
     <nav class="ft-col" aria-label="Company"><b>Company</b><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
     <nav class="ft-col" aria-label="Legal"><b>Legal</b><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></nav>
   </div>
